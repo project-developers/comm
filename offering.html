@@ -15,8 +15,23 @@
 
 <h1>webrtc without signaling server demo.</h1>
 
-  <a href="https://project-developers.github.io/comm/">Back</a>
+<a href="https://project-developers.github.io/comm/">Back</a>
+
+<h1>Realtime communication with WebRTC</h1>
+
+  <video id="localVideo" autoplay playsinline></video>
+  <video id="remoteVideo" autoplay playsinline></video>
+
+  <div>
+    <button id="startButton">Start</button>
+    <button id="callButton">Call</button>
+    <button id="hangupButton">Hang Up</button>
+  </div>
+
+
+
 <div id="chatlog" class="chatlog"></div>
+<video id="local_video" autoplay muted></video>
 <input id="chatinput" type="text"  placeholder="type here" disabled>
 <button id="chatbutton" onclick="chatbuttonclick()" disabled>send</button>
 
@@ -46,6 +61,8 @@ please wait for peer to give answer and paste it below
 <button id="buttonanswerpasted" onclick="clickanswerpasted()">answer pasted</button>
 </span>
 
+  <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+<script src="main.js"></script>
 </body>
 
 </html>
