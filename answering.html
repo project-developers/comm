@@ -14,8 +14,21 @@
 <body>
 
 <h1>webrtc without signaling server demo.</h1>
+
+<a href="https://project-developers.github.io/comm/">Back</a>
+
+<h1>Realtime communication with WebRTC</h1>
+
+  <video id="localVideo" autoplay playsinline></video>
+  <video id="remoteVideo" autoplay playsinline></video>
+
+  <div>
+    <button id="startButton">Start</button>
+    <button id="callButton">Call</button>
+    <button id="hangupButton">Hang Up</button>
+  </div>
+
   
-  <a href="https://project-developers.github.io/comm/">Back</a>
 
 <div id="chatlog" class="chatlog"></div>
 <input id="chatinput" type="text"  placeholder="type here" disabled>
@@ -38,7 +51,8 @@ please send following answer to peer
 <textarea id="textanswer" readonly
   placeholder="please wait a few seconds"></textarea>
 </span>
-
+<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+<script src="main.js"></script>
 </body>
 
 </html>
