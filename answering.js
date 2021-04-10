@@ -1,3 +1,17 @@
+const localStream = await getUserMedia({vide: true, audio: true});
+const peerConnection2 = new RTCPeerConnection(iceConfig);
+localStream.getTracks().forEach(track => {
+    peerConnection2.addTrack(track, localStream);
+});
+
+const remoteStream = MediaStream();
+const remoteVideo = document.getElementById('remoteVideo2');
+remoteVideo.srcObject = remoteStream;
+
+peerConnection2.addEventListener('track', async (event) => {
+    remoteStream.addTrack(event.track, remoteStream);
+});
+
 function clickofferpasted() {
   console.log('clickremoteoffer');
   document.getElementById('buttonofferpasted').disabled = true;
