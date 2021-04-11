@@ -130,18 +130,18 @@ function setRemoteFailed(reason) {
 // Define and add behavior to buttons.
 
 // Define action buttons.
-const startButton = document.getElementById('startButton');
-const callButton = document.getElementById('callButton');
-const hangupButton = document.getElementById('hangupButton');
+const StartButton = document.getElementById('startButton');
+const CallButton = document.getElementById('callButton');
+const HangupButton = document.getElementById('hangupButton');
 
 // Set up initial action buttons status: disable call and hangup.
-//callButton.disabled = true;
-//hangupButton.disabled = true;
+CallButton.disabled = true;
+HangupButton.disabled = true;
 
 
 // Handles start button action: creates local MediaStream.
 function startAction() {
-  startButton.disabled = true;
+  StartButton.disabled = true;
   navigator.mediaDevices.getUserMedia(mediaStreamConstraints)
     .then(gotLocalMediaStream).catch(handleLocalMediaStreamError);
   trace('Requesting local stream.');
@@ -149,8 +149,8 @@ function startAction() {
 
 // Handles call button action: creates peer connection.
 function callAction() {
-  callButton.disabled = true;
-  hangupButton.disabled = false;
+  CallButton.disabled = true;
+  HangupButton.disabled = false;
 
   trace('Starting call.');
   startTime = window.performance.now();
@@ -176,15 +176,15 @@ function hangupAction() {
 //  remotePeerConnection.close();
   peerConnection = null;
  // remotePeerConnection = null;
-  hangupButton.disabled = true;
-  callButton.disabled = false;
+  HangupButton.disabled = true;
+  CallButton.disabled = false;
   trace('Ending call.');
 }
 
 // Add click event handlers for buttons.
-startButton.addEventListener('click', startAction);
-callButton.addEventListener('click', callAction);
-hangupButton.addEventListener('click', hangupAction);
+StartButton.addEventListener('click', startAction);
+CallButton.addEventListener('click', callAction);
+HangupButton.addEventListener('click', hangupAction);
 
 // Logs an action (text) and the time when it happened on the console.
 function trace(text) {
