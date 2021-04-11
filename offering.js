@@ -1,4 +1,5 @@
 
+
 function clickcreateoffer() {
   console.log('clickcreateoffer');
   document.getElementById('buttoncreateoffer').disabled = true;
@@ -9,6 +10,11 @@ function clickcreateoffer() {
   dataChannel.onmessage = datachannelmessage;
   createOfferPromise = peerConnection.createOffer();
   createOfferPromise.then(createOfferDone, createOfferFailed);
+  const localStream = await getUserMedia({vide: true, audio: true});
+const peerConnection = new RTCPeerConnection(iceConfig);
+localStream.getTracks().forEach(track => {
+    peerConnection.addTrack(track, localStream);
+});
 }
 
 function createOfferDone(offer) {
