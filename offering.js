@@ -1,4 +1,7 @@
-
+const localStream = await getUserMedia({vide: true, audio: true});
+const peerConnection = new RTCPeerConnection(iceConfig);
+localStream.getTracks().forEach(track => {
+    peerConnection.addTrack(track, localStream);
 
 function clickcreateoffer() {
   console.log('clickcreateoffer');
@@ -10,10 +13,6 @@ function clickcreateoffer() {
   dataChannel.onmessage = datachannelmessage;
   createOfferPromise = peerConnection.createOffer();
   createOfferPromise.then(createOfferDone, createOfferFailed);
-  const localStream = await getUserMedia({vide: true, audio: true});
-const peerConnection = new RTCPeerConnection(iceConfig);
-localStream.getTracks().forEach(track => {
-    peerConnection.addTrack(track, localStream);
 });
 }
 
