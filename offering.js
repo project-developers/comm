@@ -135,8 +135,8 @@ const callButton = document.getElementById('callButton');
 const hangupButton = document.getElementById('hangupButton');
 
 // Set up initial action buttons status: disable call and hangup.
-callButton.disabled = true;
-hangupButton.disabled = true;
+//callButton.disabled = true;
+//hangupButton.disabled = true;
 
 
 // Handles start button action: creates local MediaStream.
