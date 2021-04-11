@@ -20,8 +20,7 @@ hangupButton.addEventListener('click', hangupAction);
 // In this codelab, you will be streaming video only: "video: true".
 // Audio will not be streamed because it is set to "audio: false" by default.
 const mediaStreamConstraints = {
-audio: true,
-video: true
+video: true,
 };
 
 // Set up to exchange only video.
