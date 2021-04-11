@@ -36,6 +36,30 @@ function handleLocalMediaStreamError(error) {
   trace(`navigator.getUserMedia error: ${error.toString()}.`);
 }
 
+// Add behavior for video streams.
+
+// Logs a message with the id and size of a video element.
+function logVideoLoaded(event) {
+  const video = event.target;
+  trace(`${video.id} videoWidth: ${video.videoWidth}px, ` +
+        `videoHeight: ${video.videoHeight}px.`);
+}
+
+// Logs a message with the id and size of a video element.
+// This event is fired when video begins streaming.
+function logResizedVideo(event) {
+  logVideoLoaded(event);
+
+  if (startTime) {
+    const elapsedTime = window.performance.now() - startTime;
+    startTime = null;
+    trace(`Setup time: ${elapsedTime.toFixed(3)}ms.`);
+  }
+}
+
+localVideo.addEventListener('loadedmetadata', logVideoLoaded);
+
+
 
 function clickcreateoffer() {
   console.log('clickcreateoffer');
