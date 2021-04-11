@@ -57,7 +57,7 @@ function logResizedVideo(event) {
   }
 }
 
-localVideo.addEventListener('loadedmetadata', logVideoLoaded);
+//localVideo.addEventListener('loadedmetadata', logVideoLoaded);
 
 
 
