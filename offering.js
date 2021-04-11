@@ -126,3 +126,47 @@ function setRemoteFailed(reason) {
   console.log(reason);
 }
 
+
+// Define and add behavior to buttons.
+
+// Define action buttons.
+const startButton = document.getElementById('startButton');
+const callButton = document.getElementById('callButton');
+const hangupButton = document.getElementById('hangupButton');
+
+// Set up initial action buttons status: disable call and hangup.
+callButton.disabled = true;
+hangupButton.disabled = true;
+
+
+// Handles start button action: creates local MediaStream.
+function startAction() {
+  startButton.disabled = true;
+  navigator.mediaDevices.getUserMedia(mediaStreamConstraints)
+    .then(gotLocalMediaStream).catch(handleLocalMediaStreamError);
+  trace('Requesting local stream.');
+}
+
+// Handles call button action: creates peer connection.
+function callAction() {
+  callButton.disabled = true;
+  hangupButton.disabled = false;
+
+  trace('Starting call.');
+  startTime = window.performance.now();
+
+  // Get local media stream tracks.
+  const videoTracks = localStream.getVideoTracks();
+  const audioTracks = localStream.getAudioTracks();
+  if (videoTracks.length > 0) {
+    trace(`Using video device: ${videoTracks[0].label}.`);
+  }
+  if (audioTracks.length > 0) {
+    trace(`Using audio device: ${audioTracks[0].label}.`);
+  }
+  
+    // Add local stream to connection and create offer to connect.
+  peerConnection.addStream(localStream);
+  trace('Added local stream to peerConnection.');
+}
+  
