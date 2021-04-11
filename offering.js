@@ -13,7 +13,6 @@ function clickcreateoffer() {
   dataChannel.onmessage = datachannelmessage;
   createOfferPromise = peerConnection.createOffer();
   createOfferPromise.then(createOfferDone, createOfferFailed);
-});
 }
 
 function createOfferDone(offer) {
