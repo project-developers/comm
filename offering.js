@@ -1,5 +1,5 @@
 const localStream = await getUserMedia({vide: true, audio: true});
-const peerConnection = new RTCPeerConnection(iceConfig);
+const peerConnection = new RTCPeerConnection(configuration);
 localStream.getTracks().forEach(track => {
     peerConnection.addTrack(track, localStream);
 
