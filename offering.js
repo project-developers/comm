@@ -1,8 +1,8 @@
-const localStream = await getUserMedia({vide: true, audio: true});
+/*const localStream = await getUserMedia({vide: true, audio: true});
 const peerConnection = new RTCPeerConnection(configuration);
 localStream.getTracks().forEach(track => {
     peerConnection.addTrack(track, localStream);
-
+*/
 function clickcreateoffer() {
   console.log('clickcreateoffer');
   document.getElementById('buttoncreateoffer').disabled = true;
