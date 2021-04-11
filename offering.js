@@ -1,8 +1,27 @@
-/*const localStream = await getUserMedia({vide: true, audio: true});
-const peerConnection = new RTCPeerConnection(configuration);
-localStream.getTracks().forEach(track => {
-    peerConnection.addTrack(track, localStream);
-*/
+'use strict';
+
+// Set up media stream constant and parameters.
+
+// In this codelab, you will be streaming video only: "video: true".
+// Audio will not be streamed because it is set to "audio: false" by default.
+const mediaStreamConstraints = {
+  video: true,
+};
+
+// Set up to exchange only video.
+const offerOptions = {
+  offerToReceiveVideo: 1,
+};
+
+// Define initial start time of the call (defined as connection between peers).
+let startTime = null;
+
+// Define peer connections, streams and video elements.
+const localVideo = document.getElementById('localVideo');
+
+let localStream;
+
+
 function clickcreateoffer() {
   console.log('clickcreateoffer');
   document.getElementById('buttoncreateoffer').disabled = true;
