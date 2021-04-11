@@ -169,4 +169,27 @@ function callAction() {
   peerConnection.addStream(localStream);
   trace('Added local stream to peerConnection.');
 }
-  
+
+// Handles hangup action: ends up call, closes connections and resets peers.
+function hangupAction() {
+  peerConnection.close();
+//  remotePeerConnection.close();
+  peerConnection = null;
+ // remotePeerConnection = null;
+  hangupButton.disabled = true;
+  callButton.disabled = false;
+  trace('Ending call.');
+}
+
+// Add click event handlers for buttons.
+startButton.addEventListener('click', startAction);
+callButton.addEventListener('click', callAction);
+hangupButton.addEventListener('click', hangupAction);
+
+// Logs an action (text) and the time when it happened on the console.
+function trace(text) {
+  text = text.trim();
+  const now = (window.performance.now() / 1000).toFixed(3);
+
+  console.log(now, text);
+}
