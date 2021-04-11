@@ -1,3 +1,5 @@
+'use strict';
+
 // Define action buttons.
 const startButton = document.getElementById('startButton');
 const callButton = document.getElementById('callButton');
