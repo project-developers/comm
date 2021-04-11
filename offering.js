@@ -21,6 +21,21 @@ const localVideo = document.getElementById('localVideo');
 
 let localStream;
 
+// Define MediaStreams callbacks.
+
+// Sets the MediaStream as the video element src.
+function gotLocalMediaStream(mediaStream) {
+  localVideo.srcObject = mediaStream;
+  localStream = mediaStream;
+  trace('Received local stream.');
+  callButton.disabled = false;  // Enable call button.
+}
+
+// Handles error by logging a message to the console.
+function handleLocalMediaStreamError(error) {
+  trace(`navigator.getUserMedia error: ${error.toString()}.`);
+}
+
 
 function clickcreateoffer() {
   console.log('clickcreateoffer');
