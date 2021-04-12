@@ -3,6 +3,7 @@ function clickofferpasted() {
   console.log('clickremoteoffer');
   document.getElementById('buttonofferpasted').disabled = true;
   peerConnection = createPeerConnection(lasticecandidate);
+  peerConnection.onaddstream = gotRemoteMediaStream;
   peerConnection.ondatachannel = handledatachannel;
   textelement = document.getElementById('textoffer');
   textelement.readOnly = true;
