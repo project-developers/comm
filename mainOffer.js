@@ -23,7 +23,7 @@ const mediaStreamConstraints = {
   audio: true,
 video: {
   width: {min: 640, max: 800},
-      height: {min 480, max: 600},
+      height: {min: 480, max: 600},
         aspectRatio: 4/3
 }
 };
