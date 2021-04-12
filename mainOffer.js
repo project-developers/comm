@@ -23,12 +23,12 @@ const mediaStreamConstraints = {
   audio: true,
 video: true
 };
-
+/*
 // Set up to exchange only video.
 const offerOptions = {
   offerToReceiveVideo: 1,
 };
-
+*/
 // Define initial start time of the call (defined as connection between peers).
 let startTime = null;
 
@@ -45,6 +45,7 @@ function gotLocalMediaStream(mediaStream) {
   localVideo.srcObject = mediaStream;
   localStream = mediaStream;
   trace('Received local stream.');
+  localVideo.muted = true;
   callButton.disabled = false;  // Enable call button.
 }
 
