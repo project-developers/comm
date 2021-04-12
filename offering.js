@@ -6,7 +6,7 @@ function clickcreateoffer() {
   document.getElementById('buttoncreateoffer').disabled = true;
   document.getElementById('spanoffer').classList.toggle('invisible');
   peerConnection = createPeerConnection(lasticecandidate);
-  peerConnection = addStream(localStream);
+  peerConnection.addStream(localStream);
   dataChannel = peerConnection.createDataChannel('chat');
   dataChannel.onopen = datachannelopen;
   dataChannel.onmessage = datachannelmessage;
