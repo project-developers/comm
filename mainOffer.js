@@ -21,7 +21,7 @@ hangupButton.addEventListener('click', hangupAction);
 // Audio will not be streamed because it is set to "audio: false" by default.
 const mediaStreamConstraints = {
   audio: true,
-video: : {
+video: {
   width: {min: 640, max: 800},
       height: {min 480, max: 600},
         aspectRatio: 4/3
