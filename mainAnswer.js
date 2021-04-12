@@ -17,12 +17,12 @@ callButton.addEventListener('click', callAction);
 hangupButton.addEventListener('click', hangupAction);
 
 
-
+/*
 // Set up to exchange only video.
 const offerOptions = {
   offerToReceiveVideo: 1,
 };
-
+*/
 // Define initial start time of the call (defined as connection between peers).
 let startTime = null;
 
