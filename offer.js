@@ -4,6 +4,11 @@ function clickcreateoffer() {
   //document.getElementById('buttonoffer').style.display = "none";
   document.getElementById('spanoffer').classList.toggle('invisible');
   peerConnection = createPeerConnection(lasticecandidate);
+  
+  chatChannel = peerConnection.createDataChannel('chat');
+  chatChannel.onopen = datachannelopen;
+  chatChannel.onmessage = datachannelmessage;
+  
   dataChannel = peerConnection.createDataChannel('sendDataChannel');
   dataChannel.binaryType = 'arraybuffer';
   console.log('Created send data channel');
