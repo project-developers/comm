@@ -77,3 +77,12 @@ function receiveChannelCallback(event) {
   }
 }
 
+function onSendChannelStateChange() {
+  if (sendChannel) {
+    const {readyState} = sendChannel;
+    console.log(`Send channel state is: ${readyState}`);
+    if (readyState === 'open') {
+      sendData();
+    }
+  }
+}
