@@ -132,16 +132,16 @@ function sendData() {
 function closeDataChannels() {
   console.log('Closing data channels');
   //sendChannel.close();
-  console.log(`Closed data channel with label: ${sendChannel.label}`);
-  sendChannel = null;
+  //console.log(`Closed data channel with label: ${sendChannel.label}`);
+  //sendChannel = null;
   if (dataChannel) {
     dataChannel.close();
     console.log(`Closed data channel with label: ${dataChannel.label}`);
     dataChannel = null;
   }
-  localConnection.close();
+  //localConnection.close();
   peerConnection.close();
-  localConnection = null;
+  //localConnection = null;
   peerConnection = null;
   console.log('Closed peer connections');
 
