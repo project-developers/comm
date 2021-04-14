@@ -41,7 +41,8 @@ abortButton.addEventListener('click', () => {
 });
 
 async function handleFileInputChange() {
-  const file = fileInput.files[0];
+  //const file = fileInput.files[0];
+  const file = files;
   if (!file) {
     console.log('No file chosen');
   } else {
