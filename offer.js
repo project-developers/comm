@@ -70,8 +70,8 @@ function setRemoteFailed(reason) {
 }
 
 function onSendChannelStateChange() {
-  if (sendChannel) {
-    const {readyState} = sendChannel;
+  if (dataChannel) {
+    const {readyState} = dataChannel;
     console.log(`Send channel state is: ${readyState}`);
     if (readyState === 'open') {
       sendData();
