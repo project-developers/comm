@@ -6,9 +6,12 @@ function clickcreateoffer() {
   document.getElementById('buttoncreateoffer').disabled = true;
   document.getElementById('spanoffer').classList.toggle('invisible');
   peerConnection = createPeerConnection(lasticecandidate);
-  dataChannel = peerConnection.createDataChannel('chat');
-  dataChannel.onopen = datachannelopen;
-  dataChannel.onmessage = datachannelmessage;
+  dataChannel = peerConnection.createDataChannel('sendDataChannel');
+  dataChannel.binaryType = 'arraybuffer';
+  console.log('Created send data channel');
+  dataChannel.onopen = onSendChannelStateChange;
+  dataChannel.onclose = onSendChannelStateChange;
+  dataChannel.error = onError;
   createOfferPromise = peerConnection.createOffer();
   createOfferPromise.then(createOfferDone, createOfferFailed);
 }
