@@ -131,7 +131,7 @@ function sendData() {
 
 function closeDataChannels() {
   console.log('Closing data channels');
-  sendChannel.close();
+  //sendChannel.close();
   console.log(`Closed data channel with label: ${sendChannel.label}`);
   sendChannel = null;
   if (dataChannel) {
