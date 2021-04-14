@@ -13,7 +13,7 @@ let remoteConnection;
 //let dataChannel;
 let receiveChannel;
 let fileReader;
-let files;
+//let files;
 const bitrateDiv = document.querySelector('div#bitrate');
 const fileInput = document.querySelector('input#fileInput');
 const abortButton = document.querySelector('button#abortButton');
@@ -43,7 +43,7 @@ abortButton.addEventListener('click', () => {
 
 async function handleFileInputChange() {
   const file = fileInput.files[0];
-  files = file;
+  //files = file;
   if (!file) {
     console.log('No file chosen');
   } else {
