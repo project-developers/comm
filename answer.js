@@ -3,17 +3,13 @@ function clickofferpasted() {
   console.log('clickremoteoffer');
   document.getElementById('buttonofferpasted').disabled = true;
   peerConnection = createPeerConnection(lasticecandidate);
-  peerConnection.onaddstream = gotRemoteMediaStream;
-  localStream.getTracks().forEach(track => {
-    peerConnection.addTrack(track, localStream);
-  });
-  peerConnection.ondatachannel = handledatachannel;
+  peerConnection.ondatachannel = receiveChannelCallback;
   textelement = document.getElementById('textoffer');
   textelement.readOnly = true;
   offer = JSON.parse(textelement.value);
   setRemotePromise = peerConnection.setRemoteDescription(offer);
   setRemotePromise.then(setRemoteDone, setRemoteFailed);
-  document.getElementById('buttonoffer').style.display = "none";
+  //document.getElementById('buttonoffer').style.display = "none";
 }
 
 function setRemoteDone() {
