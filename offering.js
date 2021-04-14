@@ -6,9 +6,6 @@ function clickcreateoffer() {
   document.getElementById('buttoncreateoffer').disabled = true;
   document.getElementById('spanoffer').classList.toggle('invisible');
   peerConnection = createPeerConnection(lasticecandidate);
-  localStream.getTracks().forEach(track => {
-    peerConnection.addTrack(track, localStream);
-  });
   dataChannel = peerConnection.createDataChannel('chat');
   dataChannel.onopen = datachannelopen;
   dataChannel.onmessage = datachannelmessage;
