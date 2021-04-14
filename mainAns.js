@@ -187,6 +187,8 @@ function dataChannelCallback(event) {
   }
 }
 
+var info;
+
 function onReceiveMessageCallback(event) {
   console.log(`Received Message ${event.data.byteLength}`);
   receiveBuffer.push(event.data);
@@ -195,7 +197,8 @@ function onReceiveMessageCallback(event) {
 
   // we are assuming that our signaling protocol told
   // about the expected file size (and name, hash, etc).
-  const file = fileInput.files[0];
+  //const file = fileInput.files[0];
+  const file = info;
   if (receivedSize === file.size) {
     const received = new Blob(receiveBuffer);
     receiveBuffer = [];
