@@ -8,9 +8,9 @@
  */
 'use strict';
 
-let localConnection;
+//let localConnection;
 let remoteConnection;
-let sendChannel;
+//let sendChannel;
 let receiveChannel;
 let fileReader;
 const bitrateDiv = document.querySelector('div#bitrate');
@@ -52,7 +52,7 @@ async function handleFileInputChange() {
 async function createConnection() {
   abortButton.disabled = false;
   sendFileButton.disabled = true;
-  localConnection = new RTCPeerConnection();
+  /*localConnection = new RTCPeerConnection();
   console.log('Created local peer connection object localConnection');
 
   sendChannel = localConnection.createDataChannel('sendDataChannel');
@@ -67,7 +67,10 @@ async function createConnection() {
     console.log('Local ICE candidate: ', event.candidate);
     await remoteConnection.addIceCandidate(event.candidate);
   });
-
+*/
+  remoteConnection = peerConnection;
+  console.log('Created remote peer connection object remoteConnection');
+/*
   remoteConnection = new RTCPeerConnection();
   console.log('Created remote peer connection object remoteConnection');
 
@@ -83,45 +86,8 @@ async function createConnection() {
   } catch (e) {
     console.log('Failed to create session description: ', e);
   }
-
+*/
   fileInput.disabled = true;
-}
-
-function sendData() {
-  const file = fileInput.files[0];
-  console.log(`File is ${[file.name, file.size, file.type, file.lastModified].join(' ')}`);
-
-  // Handle 0 size files.
-  statusMessage.textContent = '';
-  downloadAnchor.textContent = '';
-  if (file.size === 0) {
-    bitrateDiv.innerHTML = '';
-    statusMessage.textContent = 'File is empty, please select a non-empty file';
-    closeDataChannels();
-    return;
-  }
-  sendProgress.max = file.size;
-  receiveProgress.max = file.size;
-  const chunkSize = 16384;
-  fileReader = new FileReader();
-  let offset = 0;
-  fileReader.addEventListener('error', error => console.error('Error reading file:', error));
-  fileReader.addEventListener('abort', event => console.log('File reading aborted:', event));
-  fileReader.addEventListener('load', e => {
-    console.log('FileRead.onload ', e);
-    sendChannel.send(e.target.result);
-    offset += e.target.result.byteLength;
-    sendProgress.value = offset;
-    if (offset < file.size) {
-      readSlice(offset);
-    }
-  });
-  const readSlice = o => {
-    console.log('readSlice ', o);
-    const slice = file.slice(offset, o + chunkSize);
-    fileReader.readAsArrayBuffer(slice);
-  };
-  readSlice(0);
 }
 
 function closeDataChannels() {
@@ -134,9 +100,9 @@ function closeDataChannels() {
     console.log(`Closed data channel with label: ${receiveChannel.label}`);
     receiveChannel = null;
   }
-  localConnection.close();
+  //localConnection.close();
   remoteConnection.close();
-  localConnection = null;
+  //localConnection = null;
   remoteConnection = null;
   console.log('Closed peer connections');
 
@@ -145,7 +111,7 @@ function closeDataChannels() {
   abortButton.disabled = true;
   sendFileButton.disabled = false;
 }
-
+/*
 async function gotLocalDescription(desc) {
   await localConnection.setLocalDescription(desc);
   console.log(`Offer from localConnection\n ${desc.sdp}`);
@@ -157,7 +123,7 @@ async function gotLocalDescription(desc) {
     console.log('Failed to create session description: ', e);
   }
 }
-
+*/
 async function gotRemoteDescription(desc) {
   await remoteConnection.setLocalDescription(desc);
   console.log(`Answer from remoteConnection\n ${desc.sdp}`);
@@ -214,7 +180,7 @@ function onReceiveMessageCallback(event) {
     closeDataChannels();
   }
 }
-
+/*
 function onSendChannelStateChange() {
   if (sendChannel) {
     const {readyState} = sendChannel;
@@ -224,7 +190,7 @@ function onSendChannelStateChange() {
     }
   }
 }
-
+*/
 function onError(error) {
   if (sendChannel) {
     console.error('Error in sendChannel:', error);
