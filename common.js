@@ -42,7 +42,7 @@ function handleiceconnectionstatechange(event) {
 
 function datachannelopen() {
   console.log('datachannelopen');
-  //chatlog('connected');
+  chatlog('connected');
   document.getElementById('chatinput').disabled = false;
   document.getElementById('chatbutton').disabled = false;
   //document.getElementById('spananswer').style.display = "none";
