@@ -45,6 +45,8 @@ function datachannelopen() {
   chatlog('connected');
   document.getElementById('chatinput').disabled = false;
   document.getElementById('chatbutton').disabled = false;
+  document.getElementById('spananswer').style.display = "none";
+  document.getElementById('recordingsList').style.display = "block";
 }
 
 function datachannelmessage(message) {

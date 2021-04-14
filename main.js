@@ -1,285 +1,275 @@
+/* eslint no-unused-expressions: 0 */
+/*
+ *  Copyright (c) 2015 The WebRTC project authors. All Rights Reserved.
+ *
+ *  Use of this source code is governed by a BSD-style license
+ *  that can be found in the LICENSE file in the root of the source
+ *  tree.
+ */
 'use strict';
 
-// Set up media stream constant and parameters.
+let localConnection;
+let remoteConnection;
+let sendChannel;
+let receiveChannel;
+let fileReader;
+const bitrateDiv = document.querySelector('div#bitrate');
+const fileInput = document.querySelector('input#fileInput');
+const abortButton = document.querySelector('button#abortButton');
+const downloadAnchor = document.querySelector('a#download');
+const sendProgress = document.querySelector('progress#sendProgress');
+const receiveProgress = document.querySelector('progress#receiveProgress');
+const statusMessage = document.querySelector('span#status');
+const sendFileButton = document.querySelector('button#sendFile');
 
-// In this codelab, you will be streaming video only: "video: true".
-// Audio will not be streamed because it is set to "audio: false" by default.
-const mediaStreamConstraints = {
-  video: true,
-};
+let receiveBuffer = [];
+let receivedSize = 0;
 
-// Set up to exchange only video.
-const offerOptions = {
-  offerToReceiveVideo: 1,
-};
+let bytesPrev = 0;
+let timestampPrev = 0;
+let timestampStart;
+let statsInterval = null;
+let bitrateMax = 0;
 
-// Define initial start time of the call (defined as connection between peers).
-let startTime = null;
+sendFileButton.addEventListener('click', () => createConnection());
+fileInput.addEventListener('change', handleFileInputChange, false);
+abortButton.addEventListener('click', () => {
+  if (fileReader && fileReader.readyState === 1) {
+    console.log('Abort read!');
+    fileReader.abort();
+  }
+});
 
-// Define peer connections, streams and video elements.
-const localVideo = document.getElementById('localVideo');
-const remoteVideo = document.getElementById('remoteVideo');
-
-let localStream;
-let remoteStream;
-
-let localPeerConnection;
-let remotePeerConnection;
-
-
-// Define MediaStreams callbacks.
-
-// Sets the MediaStream as the video element src.
-function gotLocalMediaStream(mediaStream) {
-  localVideo.srcObject = mediaStream;
-  localStream = mediaStream;
-  trace('Received local stream.');
-  callButton.disabled = false;  // Enable call button.
-}
-
-// Handles error by logging a message to the console.
-function handleLocalMediaStreamError(error) {
-  trace(`navigator.getUserMedia error: ${error.toString()}.`);
-}
-
-// Handles remote MediaStream success by adding it as the remoteVideo src.
-function gotRemoteMediaStream(event) {
-  const mediaStream = event.stream;
-  remoteVideo.srcObject = mediaStream;
-  remoteStream = mediaStream;
-  trace('Remote peer connection received remote stream.');
-}
-
-
-// Add behavior for video streams.
-
-// Logs a message with the id and size of a video element.
-function logVideoLoaded(event) {
-  const video = event.target;
-  trace(`${video.id} videoWidth: ${video.videoWidth}px, ` +
-        `videoHeight: ${video.videoHeight}px.`);
-}
-
-// Logs a message with the id and size of a video element.
-// This event is fired when video begins streaming.
-function logResizedVideo(event) {
-  logVideoLoaded(event);
-
-  if (startTime) {
-    const elapsedTime = window.performance.now() - startTime;
-    startTime = null;
-    trace(`Setup time: ${elapsedTime.toFixed(3)}ms.`);
+async function handleFileInputChange() {
+  const file = fileInput.files[0];
+  if (!file) {
+    console.log('No file chosen');
+  } else {
+    sendFileButton.disabled = false;
   }
 }
 
-localVideo.addEventListener('loadedmetadata', logVideoLoaded);
-remoteVideo.addEventListener('loadedmetadata', logVideoLoaded);
-remoteVideo.addEventListener('onresize', logResizedVideo);
+async function createConnection() {
+  abortButton.disabled = false;
+  sendFileButton.disabled = true;
+  localConnection = new RTCPeerConnection();
+  console.log('Created local peer connection object localConnection');
 
+  sendChannel = localConnection.createDataChannel('sendDataChannel');
+  sendChannel.binaryType = 'arraybuffer';
+  console.log('Created send data channel');
 
-// Define RTC peer connection behavior.
+  sendChannel.addEventListener('open', onSendChannelStateChange);
+  sendChannel.addEventListener('close', onSendChannelStateChange);
+  sendChannel.addEventListener('error', onError);
 
-// Connects with new peer candidate.
-function handleConnection(event) {
-  const peerConnection = event.target;
-  const iceCandidate = event.candidate;
+  localConnection.addEventListener('icecandidate', async event => {
+    console.log('Local ICE candidate: ', event.candidate);
+    await remoteConnection.addIceCandidate(event.candidate);
+  });
 
-  if (iceCandidate) {
-    const newIceCandidate = new RTCIceCandidate(iceCandidate);
-    const otherPeer = getOtherPeer(peerConnection);
+  remoteConnection = new RTCPeerConnection();
+  console.log('Created remote peer connection object remoteConnection');
 
-    otherPeer.addIceCandidate(newIceCandidate)
-      .then(() => {
-        handleConnectionSuccess(peerConnection);
-      }).catch((error) => {
-        handleConnectionFailure(peerConnection, error);
-      });
+  remoteConnection.addEventListener('icecandidate', async event => {
+    console.log('Remote ICE candidate: ', event.candidate);
+    await localConnection.addIceCandidate(event.candidate);
+  });
+  remoteConnection.addEventListener('datachannel', receiveChannelCallback);
 
-    trace(`${getPeerName(peerConnection)} ICE candidate:\n` +
-          `${event.candidate.candidate}.`);
+  try {
+    const offer = await localConnection.createOffer();
+    await gotLocalDescription(offer);
+  } catch (e) {
+    console.log('Failed to create session description: ', e);
+  }
+
+  fileInput.disabled = true;
+}
+
+function sendData() {
+  const file = fileInput.files[0];
+  console.log(`File is ${[file.name, file.size, file.type, file.lastModified].join(' ')}`);
+
+  // Handle 0 size files.
+  statusMessage.textContent = '';
+  downloadAnchor.textContent = '';
+  if (file.size === 0) {
+    bitrateDiv.innerHTML = '';
+    statusMessage.textContent = 'File is empty, please select a non-empty file';
+    closeDataChannels();
+    return;
+  }
+  sendProgress.max = file.size;
+  receiveProgress.max = file.size;
+  const chunkSize = 16384;
+  fileReader = new FileReader();
+  let offset = 0;
+  fileReader.addEventListener('error', error => console.error('Error reading file:', error));
+  fileReader.addEventListener('abort', event => console.log('File reading aborted:', event));
+  fileReader.addEventListener('load', e => {
+    console.log('FileRead.onload ', e);
+    sendChannel.send(e.target.result);
+    offset += e.target.result.byteLength;
+    sendProgress.value = offset;
+    if (offset < file.size) {
+      readSlice(offset);
+    }
+  });
+  const readSlice = o => {
+    console.log('readSlice ', o);
+    const slice = file.slice(offset, o + chunkSize);
+    fileReader.readAsArrayBuffer(slice);
+  };
+  readSlice(0);
+}
+
+function closeDataChannels() {
+  console.log('Closing data channels');
+  sendChannel.close();
+  console.log(`Closed data channel with label: ${sendChannel.label}`);
+  sendChannel = null;
+  if (receiveChannel) {
+    receiveChannel.close();
+    console.log(`Closed data channel with label: ${receiveChannel.label}`);
+    receiveChannel = null;
+  }
+  localConnection.close();
+  remoteConnection.close();
+  localConnection = null;
+  remoteConnection = null;
+  console.log('Closed peer connections');
+
+  // re-enable the file select
+  fileInput.disabled = false;
+  abortButton.disabled = true;
+  sendFileButton.disabled = false;
+}
+
+async function gotLocalDescription(desc) {
+  await localConnection.setLocalDescription(desc);
+  console.log(`Offer from localConnection\n ${desc.sdp}`);
+  await remoteConnection.setRemoteDescription(desc);
+  try {
+    const answer = await remoteConnection.createAnswer();
+    await gotRemoteDescription(answer);
+  } catch (e) {
+    console.log('Failed to create session description: ', e);
   }
 }
 
-// Logs that the connection succeeded.
-function handleConnectionSuccess(peerConnection) {
-  trace(`${getPeerName(peerConnection)} addIceCandidate success.`);
-};
-
-// Logs that the connection failed.
-function handleConnectionFailure(peerConnection, error) {
-  trace(`${getPeerName(peerConnection)} failed to add ICE Candidate:\n`+
-        `${error.toString()}.`);
+async function gotRemoteDescription(desc) {
+  await remoteConnection.setLocalDescription(desc);
+  console.log(`Answer from remoteConnection\n ${desc.sdp}`);
+  await localConnection.setRemoteDescription(desc);
 }
 
-// Logs changes to the connection state.
-function handleConnectionChange(event) {
-  const peerConnection = event.target;
-  console.log('ICE state change event: ', event);
-  trace(`${getPeerName(peerConnection)} ICE state: ` +
-        `${peerConnection.iceConnectionState}.`);
-}
+function receiveChannelCallback(event) {
+  console.log('Receive Channel Callback');
+  receiveChannel = event.channel;
+  receiveChannel.binaryType = 'arraybuffer';
+  receiveChannel.onmessage = onReceiveMessageCallback;
+  receiveChannel.onopen = onReceiveChannelStateChange;
+  receiveChannel.onclose = onReceiveChannelStateChange;
 
-// Logs error when setting session description fails.
-function setSessionDescriptionError(error) {
-  trace(`Failed to create session description: ${error.toString()}.`);
-}
-
-// Logs success when setting session description.
-function setDescriptionSuccess(peerConnection, functionName) {
-  const peerName = getPeerName(peerConnection);
-  trace(`${peerName} ${functionName} complete.`);
-}
-
-// Logs success when localDescription is set.
-function setLocalDescriptionSuccess(peerConnection) {
-  setDescriptionSuccess(peerConnection, 'setLocalDescription');
-}
-
-// Logs success when remoteDescription is set.
-function setRemoteDescriptionSuccess(peerConnection) {
-  setDescriptionSuccess(peerConnection, 'setRemoteDescription');
-}
-
-// Logs offer creation and sets peer connection session descriptions.
-function createdOffer(description) {
-  trace(`Offer from localPeerConnection:\n${description.sdp}`);
-
-  trace('localPeerConnection setLocalDescription start.');
-  localPeerConnection.setLocalDescription(description)
-    .then(() => {
-      setLocalDescriptionSuccess(localPeerConnection);
-    }).catch(setSessionDescriptionError);
-
-  trace('remotePeerConnection setRemoteDescription start.');
-  remotePeerConnection.setRemoteDescription(description)
-    .then(() => {
-      setRemoteDescriptionSuccess(remotePeerConnection);
-    }).catch(setSessionDescriptionError);
-
-  trace('remotePeerConnection createAnswer start.');
-  remotePeerConnection.createAnswer()
-    .then(createdAnswer)
-    .catch(setSessionDescriptionError);
-}
-
-// Logs answer to offer creation and sets peer connection session descriptions.
-function createdAnswer(description) {
-  trace(`Answer from remotePeerConnection:\n${description.sdp}.`);
-
-  trace('remotePeerConnection setLocalDescription start.');
-  remotePeerConnection.setLocalDescription(description)
-    .then(() => {
-      setLocalDescriptionSuccess(remotePeerConnection);
-    }).catch(setSessionDescriptionError);
-
-  trace('localPeerConnection setRemoteDescription start.');
-  localPeerConnection.setRemoteDescription(description)
-    .then(() => {
-      setRemoteDescriptionSuccess(localPeerConnection);
-    }).catch(setSessionDescriptionError);
-}
-
-
-// Define and add behavior to buttons.
-
-// Define action buttons.
-const startButton = document.getElementById('startButton');
-const callButton = document.getElementById('callButton');
-const hangupButton = document.getElementById('hangupButton');
-
-// Set up initial action buttons status: disable call and hangup.
-callButton.disabled = true;
-hangupButton.disabled = true;
-
-
-// Handles start button action: creates local MediaStream.
-function startAction() {
-  startButton.disabled = true;
-  navigator.mediaDevices.getUserMedia(mediaStreamConstraints)
-    .then(gotLocalMediaStream).catch(handleLocalMediaStreamError);
-  trace('Requesting local stream.');
-}
-
-// Handles call button action: creates peer connection.
-function callAction() {
-  callButton.disabled = true;
-  hangupButton.disabled = false;
-
-  trace('Starting call.');
-  startTime = window.performance.now();
-
-  // Get local media stream tracks.
-  const videoTracks = localStream.getVideoTracks();
-  const audioTracks = localStream.getAudioTracks();
-  if (videoTracks.length > 0) {
-    trace(`Using video device: ${videoTracks[0].label}.`);
+  receivedSize = 0;
+  bitrateMax = 0;
+  downloadAnchor.textContent = '';
+  downloadAnchor.removeAttribute('download');
+  if (downloadAnchor.href) {
+    URL.revokeObjectURL(downloadAnchor.href);
+    downloadAnchor.removeAttribute('href');
   }
-  if (audioTracks.length > 0) {
-    trace(`Using audio device: ${audioTracks[0].label}.`);
+}
+
+function onReceiveMessageCallback(event) {
+  console.log(`Received Message ${event.data.byteLength}`);
+  receiveBuffer.push(event.data);
+  receivedSize += event.data.byteLength;
+  receiveProgress.value = receivedSize;
+
+  // we are assuming that our signaling protocol told
+  // about the expected file size (and name, hash, etc).
+  const file = fileInput.files[0];
+  if (receivedSize === file.size) {
+    const received = new Blob(receiveBuffer);
+    receiveBuffer = [];
+
+    downloadAnchor.href = URL.createObjectURL(received);
+    downloadAnchor.download = file.name;
+    downloadAnchor.textContent =
+      `Click to download '${file.name}' (${file.size} bytes)`;
+    downloadAnchor.style.display = 'block';
+
+    const bitrate = Math.round(receivedSize * 8 /
+      ((new Date()).getTime() - timestampStart));
+    bitrateDiv.innerHTML =
+      `<strong>Average Bitrate:</strong> ${bitrate} kbits/sec (max: ${bitrateMax} kbits/sec)`;
+
+    if (statsInterval) {
+      clearInterval(statsInterval);
+      statsInterval = null;
+    }
+
+    closeDataChannels();
   }
-
-  const servers = null;  // Allows for RTC server configuration.
-
-  // Create peer connections and add behavior.
-  localPeerConnection = new RTCPeerConnection(servers);
-  trace('Created local peer connection object localPeerConnection.');
-
-  localPeerConnection.addEventListener('icecandidate', handleConnection);
-  localPeerConnection.addEventListener(
-    'iceconnectionstatechange', handleConnectionChange);
-
-  remotePeerConnection = new RTCPeerConnection(servers);
-  trace('Created remote peer connection object remotePeerConnection.');
-
-  remotePeerConnection.addEventListener('icecandidate', handleConnection);
-  remotePeerConnection.addEventListener(
-    'iceconnectionstatechange', handleConnectionChange);
-  remotePeerConnection.addEventListener('addstream', gotRemoteMediaStream);
-
-  // Add local stream to connection and create offer to connect.
-  localPeerConnection.addStream(localStream);
-  trace('Added local stream to localPeerConnection.');
-
-  trace('localPeerConnection createOffer start.');
-  localPeerConnection.createOffer(offerOptions)
-    .then(createdOffer).catch(setSessionDescriptionError);
 }
 
-// Handles hangup action: ends up call, closes connections and resets peers.
-function hangupAction() {
-  localPeerConnection.close();
-  remotePeerConnection.close();
-  localPeerConnection = null;
-  remotePeerConnection = null;
-  hangupButton.disabled = true;
-  callButton.disabled = false;
-  trace('Ending call.');
+function onSendChannelStateChange() {
+  if (sendChannel) {
+    const {readyState} = sendChannel;
+    console.log(`Send channel state is: ${readyState}`);
+    if (readyState === 'open') {
+      sendData();
+    }
+  }
 }
 
-// Add click event handlers for buttons.
-startButton.addEventListener('click', startAction);
-callButton.addEventListener('click', callAction);
-hangupButton.addEventListener('click', hangupAction);
-
-
-// Define helper functions.
-
-// Gets the "other" peer connection.
-function getOtherPeer(peerConnection) {
-  return (peerConnection === localPeerConnection) ?
-      remotePeerConnection : localPeerConnection;
+function onError(error) {
+  if (sendChannel) {
+    console.error('Error in sendChannel:', error);
+    return;
+  }
+  console.log('Error in sendChannel which is already closed:', error);
 }
 
-// Gets the name of a certain peer connection.
-function getPeerName(peerConnection) {
-  return (peerConnection === localPeerConnection) ?
-      'localPeerConnection' : 'remotePeerConnection';
+async function onReceiveChannelStateChange() {
+  if (receiveChannel) {
+    const readyState = receiveChannel.readyState;
+    console.log(`Receive channel state is: ${readyState}`);
+    if (readyState === 'open') {
+      timestampStart = (new Date()).getTime();
+      timestampPrev = timestampStart;
+      statsInterval = setInterval(displayStats, 500);
+      await displayStats();
+    }
+  }
 }
 
-// Logs an action (text) and the time when it happened on the console.
-function trace(text) {
-  text = text.trim();
-  const now = (window.performance.now() / 1000).toFixed(3);
-
-  console.log(now, text);
+// display bitrate statistics.
+async function displayStats() {
+  if (remoteConnection && remoteConnection.iceConnectionState === 'connected') {
+    const stats = await remoteConnection.getStats();
+    let activeCandidatePair;
+    stats.forEach(report => {
+      if (report.type === 'transport') {
+        activeCandidatePair = stats.get(report.selectedCandidatePairId);
+      }
+    });
+    if (activeCandidatePair) {
+      if (timestampPrev === activeCandidatePair.timestamp) {
+        return;
+      }
+      // calculate current bitrate
+      const bytesNow = activeCandidatePair.bytesReceived;
+      const bitrate = Math.round((bytesNow - bytesPrev) * 8 /
+        (activeCandidatePair.timestamp - timestampPrev));
+      bitrateDiv.innerHTML = `<strong>Current Bitrate:</strong> ${bitrate} kbits/sec`;
+      timestampPrev = activeCandidatePair.timestamp;
+      bytesPrev = bytesNow;
+      if (bitrate > bitrateMax) {
+        bitrateMax = bitrate;
+      }
+    }
+  }
 }

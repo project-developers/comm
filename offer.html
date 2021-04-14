@@ -13,7 +13,7 @@
   <meta name="description" content="WebRTC code samples">
   <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
   <meta itemprop="description" content="Client-side WebRTC code samples">
-  <meta itemprop="image" content="../../../images/webrtc-icon-192x192.png">
+  <meta itemprop="image" content="webrtc-icon-192x192.png">
   <meta itemprop="name" content="WebRTC code samples">
   <meta name="mobile-web-app-capable" content="yes">
   <meta id="theme-color" name="theme-color" content="#ffffff">
@@ -22,11 +22,12 @@
 
   <title>Transfer a file</title>
 
-  <link rel="icon" sizes="192x192" href="../../../images/webrtc-icon-192x192.png">
+  <link rel="icon" sizes="192x192" href="webrtc-icon-192x192.png">
   <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="../../../css/main.css">
-  <link rel="stylesheet" href="css/main.css" />
-
+  <link rel="stylesheet" href="main1.css">
+  <link rel="stylesheet" href="main2.css" />
+<script src="common.js"></script>
+<script src="offer.js"></script>
 </head>
 
 <body>
@@ -59,7 +60,37 @@
       <span id="status"></span>
 
     </section>
+    <section>
+<div id="chatlog" class="chatlog"></div>
+<input id="chatinput" type="text" placeholder="type here" disabled>
+<button id="chatbutton" onclick="chatbuttonclick()" disabled>send</button>
 
+<p>
+offering a connection to a peer
+</p>
+
+<p>
+				<button id="buttonoffer" class="invisible" onclick="clickcreateoffer()">Create Offer</button>
+			</p>
+
+			<span id="spanoffer" class="invisible">
+			<p>
+			Please copy the offer below and send it to a peer.
+			</p>
+			<textarea onClick="this.setSelectionRange(0, this.value.length)" id="textoffer" readonly
+			  placeholder="Please wait a few seconds"></textarea>
+			<button id="buttonoffersent" onclick="clickoffersent()" disabled>Offer Sent</button>
+			</span>
+
+			<span id="spananswer" class="invisible">
+			<p>
+			Please wait for peer to give answer and paste it below
+			</p>
+			<textarea id="textanswer"
+			  placeholder="Please paste answer from responding side"></textarea>
+			<button id="buttonanswerpasted" onclick="clickanswerpasted()">Answer Pasted</button>
+			</span>
+    </section>
   </div>
 
   <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
