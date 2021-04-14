@@ -52,6 +52,10 @@ async function handleFileInputChange() {
 async function createConnection() {
   abortButton.disabled = false;
   sendFileButton.disabled = true;
+
+  clickcreateoffer();
+
+/*
   localConnection = new RTCPeerConnection();
   console.log('Created local peer connection object localConnection');
 
@@ -83,7 +87,7 @@ async function createConnection() {
   } catch (e) {
     console.log('Failed to create session description: ', e);
   }
-
+*/
   fileInput.disabled = true;
 }
 

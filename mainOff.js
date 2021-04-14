@@ -8,10 +8,10 @@
  */
 'use strict';
 
-let peerConnection;
-//let remoteConnection;
-let dataChannel;
-//let receiveChannel;
+//let peerConnection;
+let remoteConnection;
+//let dataChannel;
+let receiveChannel;
 let fileReader;
 const bitrateDiv = document.querySelector('div#bitrate');
 const fileInput = document.querySelector('input#fileInput');
@@ -52,8 +52,9 @@ async function handleFileInputChange() {
 async function createConnection() {
   abortButton.disabled = false;
   sendFileButton.disabled = true;
-	
-	clickcreateoffer();
+
+  clickcreateoffer();
+
 /*
   peerConnection = new RTCPeerConnection();
   console.log('Created local peer connection object peerConnection');
