@@ -11,7 +11,7 @@
 let localConnection;
 //let peerConnection;
 let sendChannel;
-//let dataChannel;
+let dataChannel;
 let fileReader;
 const bitrateDiv = document.querySelector('div#bitrate');
 const fileInput = document.querySelector('input#fileInput');
