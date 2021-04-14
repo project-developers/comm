@@ -226,6 +226,7 @@ function ondataChannelStateChange() {
     const {readyState} = dataChannel;
     console.log(`Send channel state is: ${readyState}`);
     if (readyState === 'open') {
+      chatlog('connected');
       sendData();
     }
   }
