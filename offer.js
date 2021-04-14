@@ -1,7 +1,7 @@
 
 function clickcreateoffer() {
   console.log('clickcreateoffer');
-  document.getElementById('buttonoffer').style.display = "none";
+  //document.getElementById('buttonoffer').style.display = "none";
   document.getElementById('spanoffer').classList.toggle('invisible');
   peerConnection = createPeerConnection(lasticecandidate);
   peerConnection.onaddstream = gotRemoteMediaStream;
@@ -47,13 +47,13 @@ function clickoffersent() {
   console.log('clickoffersent');
   document.getElementById('spananswer').classList.toggle('invisible');
   document.getElementById('buttonoffersent').disabled = true;
-  document.getElementById('spanoffer').style.display = "none";
+  //document.getElementById('spanoffer').style.display = "none";
 }
 
 function clickanswerpasted() {
   console.log('clickanswerpasted');
-  document.getElementById('spananswer').style.display = "none";
-  document.getElementById('buttonanswerpasted').style.display = "none";
+  //document.getElementById('spananswer').style.display = "none";
+  //document.getElementById('buttonanswerpasted').style.display = "none";
   textelement = document.getElementById('textanswer');
   textelement.readOnly = true;
   answer = JSON.parse(textelement.value);
