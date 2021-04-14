@@ -3,7 +3,7 @@ function clickofferpasted() {
   console.log('clickremoteoffer');
   document.getElementById('buttonofferpasted').disabled = true;
   peerConnection = createPeerConnection(lasticecandidate);
-  peerConnection.ondatachannel = receiveChannelCallback;
+  peerConnection.ondatachannel = dataChannelCallback;
   textelement = document.getElementById('textoffer');
   textelement.readOnly = true;
   offer = JSON.parse(textelement.value);
@@ -59,13 +59,13 @@ function handledatachannel(event) {
   dataChannel.error = onError;
 }
 
-function receiveChannelCallback(event) {
+function dataChannelCallback(event) {
   console.log('Receive Channel Callback');
   dataChannel = event.channel;
   dataChannel.binaryType = 'arraybuffer';
-  dataChannel.onmessage = onReceiveMessageCallback;
-  dataChannel.onopen = onReceiveChannelStateChange;
-  dataChannel.onclose = onReceiveChannelStateChange;
+  dataChannel.onmessage = ondataMessageCallback;
+  dataChannel.onopen = ondataChannelStateChange;
+  dataChannel.onclose = ondataChannelStateChange;
 
   receivedSize = 0;
   bitrateMax = 0;
