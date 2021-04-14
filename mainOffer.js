@@ -9,9 +9,9 @@
 'use strict';
 
 let localConnection;
-let remoteConnection;
+//let remoteConnection;
 let sendChannel;
-let receiveChannel;
+//let receiveChannel;
 let fileReader;
 const bitrateDiv = document.querySelector('div#bitrate');
 const fileInput = document.querySelector('input#fileInput');
@@ -22,8 +22,8 @@ const receiveProgress = document.querySelector('progress#receiveProgress');
 const statusMessage = document.querySelector('span#status');
 const sendFileButton = document.querySelector('button#sendFile');
 
-let receiveBuffer = [];
-let receivedSize = 0;
+//let receiveBuffer = [];
+//let receivedSize = 0;
 
 let bytesPrev = 0;
 let timestampPrev = 0;
@@ -52,7 +52,9 @@ async function handleFileInputChange() {
 async function createConnection() {
   abortButton.disabled = false;
   sendFileButton.disabled = true;
-  localConnection = new RTCPeerConnection();
+  //localConnection = new RTCPeerConnection();
+ 
+  localConnection = peerConnection;
   console.log('Created local peer connection object localConnection');
 
   sendChannel = localConnection.createDataChannel('sendDataChannel');
@@ -62,12 +64,12 @@ async function createConnection() {
   sendChannel.addEventListener('open', onSendChannelStateChange);
   sendChannel.addEventListener('close', onSendChannelStateChange);
   sendChannel.addEventListener('error', onError);
-
+/*
   localConnection.addEventListener('icecandidate', async event => {
     console.log('Local ICE candidate: ', event.candidate);
     await remoteConnection.addIceCandidate(event.candidate);
   });
-
+*/
   remoteConnection = new RTCPeerConnection();
   console.log('Created remote peer connection object remoteConnection');
 
