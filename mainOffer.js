@@ -57,6 +57,8 @@ async function createConnection() {
   localConnection = peerConnection;
   console.log('Created local peer connection object localConnection');
 
+  sendChannel = dataChannel;
+  /*
   sendChannel = localConnection.createDataChannel('sendDataChannel');
   sendChannel.binaryType = 'arraybuffer';
   console.log('Created send data channel');
@@ -69,7 +71,7 @@ async function createConnection() {
     console.log('Local ICE candidate: ', event.candidate);
     await remoteConnection.addIceCandidate(event.candidate);
   });
-*/
+*//*
   remoteConnection = new RTCPeerConnection();
   console.log('Created remote peer connection object remoteConnection');
 
@@ -85,7 +87,7 @@ async function createConnection() {
   } catch (e) {
     console.log('Failed to create session description: ', e);
   }
-
+*/
   fileInput.disabled = true;
 }
 
@@ -137,9 +139,9 @@ function closeDataChannels() {
     receiveChannel = null;
   }
   localConnection.close();
-  remoteConnection.close();
+  //remoteConnection.close();
   localConnection = null;
-  remoteConnection = null;
+  //remoteConnection = null;
   console.log('Closed peer connections');
 
   // re-enable the file select
@@ -166,57 +168,6 @@ async function gotRemoteDescription(desc) {
   await localConnection.setRemoteDescription(desc);
 }
 
-function receiveChannelCallback(event) {
-  console.log('Receive Channel Callback');
-  receiveChannel = event.channel;
-  receiveChannel.binaryType = 'arraybuffer';
-  receiveChannel.onmessage = onReceiveMessageCallback;
-  receiveChannel.onopen = onReceiveChannelStateChange;
-  receiveChannel.onclose = onReceiveChannelStateChange;
-
-  receivedSize = 0;
-  bitrateMax = 0;
-  downloadAnchor.textContent = '';
-  downloadAnchor.removeAttribute('download');
-  if (downloadAnchor.href) {
-    URL.revokeObjectURL(downloadAnchor.href);
-    downloadAnchor.removeAttribute('href');
-  }
-}
-
-function onReceiveMessageCallback(event) {
-  console.log(`Received Message ${event.data.byteLength}`);
-  receiveBuffer.push(event.data);
-  receivedSize += event.data.byteLength;
-  receiveProgress.value = receivedSize;
-
-  // we are assuming that our signaling protocol told
-  // about the expected file size (and name, hash, etc).
-  const file = fileInput.files[0];
-  if (receivedSize === file.size) {
-    const received = new Blob(receiveBuffer);
-    receiveBuffer = [];
-
-    downloadAnchor.href = URL.createObjectURL(received);
-    downloadAnchor.download = file.name;
-    downloadAnchor.textContent =
-      `Click to download '${file.name}' (${file.size} bytes)`;
-    downloadAnchor.style.display = 'block';
-
-    const bitrate = Math.round(receivedSize * 8 /
-      ((new Date()).getTime() - timestampStart));
-    bitrateDiv.innerHTML =
-      `<strong>Average Bitrate:</strong> ${bitrate} kbits/sec (max: ${bitrateMax} kbits/sec)`;
-
-    if (statsInterval) {
-      clearInterval(statsInterval);
-      statsInterval = null;
-    }
-
-    closeDataChannels();
-  }
-}
-
 function onSendChannelStateChange() {
   if (sendChannel) {
     const {readyState} = sendChannel;
@@ -235,43 +186,3 @@ function onError(error) {
   console.log('Error in sendChannel which is already closed:', error);
 }
 
-async function onReceiveChannelStateChange() {
-  if (receiveChannel) {
-    const readyState = receiveChannel.readyState;
-    console.log(`Receive channel state is: ${readyState}`);
-    if (readyState === 'open') {
-      timestampStart = (new Date()).getTime();
-      timestampPrev = timestampStart;
-      statsInterval = setInterval(displayStats, 500);
-      await displayStats();
-    }
-  }
-}
-
-// display bitrate statistics.
-async function displayStats() {
-  if (remoteConnection && remoteConnection.iceConnectionState === 'connected') {
-    const stats = await remoteConnection.getStats();
-    let activeCandidatePair;
-    stats.forEach(report => {
-      if (report.type === 'transport') {
-        activeCandidatePair = stats.get(report.selectedCandidatePairId);
-      }
-    });
-    if (activeCandidatePair) {
-      if (timestampPrev === activeCandidatePair.timestamp) {
-        return;
-      }
-      // calculate current bitrate
-      const bytesNow = activeCandidatePair.bytesReceived;
-      const bitrate = Math.round((bytesNow - bytesPrev) * 8 /
-        (activeCandidatePair.timestamp - timestampPrev));
-      bitrateDiv.innerHTML = `<strong>Current Bitrate:</strong> ${bitrate} kbits/sec`;
-      timestampPrev = activeCandidatePair.timestamp;
-      bytesPrev = bytesNow;
-      if (bitrate > bitrateMax) {
-        bitrateMax = bitrate;
-      }
-    }
-  }
-}
