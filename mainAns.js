@@ -197,7 +197,7 @@ function onReceiveMessageCallback(event) {
 
   console.log(`Received Message ${event.data.byteLength}`);
   receiveBuffer.push(event.data);
-  receivedSize += event.data.byteLength;
+  receivedSize += Number(`${event.data.byteLength}`);
   receiveProgress.value = receivedSize;
 
   // we are assuming that our signaling protocol told
