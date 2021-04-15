@@ -3,28 +3,28 @@ function clickcreateoffer() {
   console.log('clickcreateoffer');
   //document.getElementById('buttonoffer').style.display = "none";
   document.getElementById('spanoffer').classList.toggle('invisible');
-  peerConnection = createPeerConnection(lasticecandidate);
+  localConnection = createPeerConnection(lasticecandidate);
   /*
   chatChannel = peerConnection.createDataChannel('chat');
   chatChannel.onopen = datachannelopen;
   chatChannel.onmessage = datachannelmessage;
   */
-  dataChannel = peerConnection.createDataChannel('sendDataChannel');
+  sendChannel = peerConnection.createDataChannel('sendDataChannel');
   //dataChannel = peerConnection.createDataChannel(fileInput.files[0].name + ' ' + fileInput.files[0].size + ' ' + fileInput.files[0].type + ' ' + fileInput.files[0].lastModified);
   
-  dataChannel.binaryType = 'arraybuffer';
+  sendChannel.binaryType = 'arraybuffer';
   console.log('Created send data channel');
-  dataChannel.onopen = onSendChannelStateChange;
-  dataChannel.onclose = onSendChannelStateChange;
-  dataChannel.error = onError;
-  createOfferPromise = peerConnection.createOffer();
+  sendChannel.onopen = onSendChannelStateChange;
+  sendChannel.onclose = onSendChannelStateChange;
+  sendChannel.error = onError;
+  createOfferPromise = localConnection.createOffer();
   createOfferPromise.then(createOfferDone, createOfferFailed);
   
 }
 
 function createOfferDone(offer) {
   console.log('createOfferDone');
-  setLocalPromise = peerConnection.setLocalDescription(offer);
+  setLocalPromise = localConnection.setLocalDescription(offer);
   setLocalPromise.then(setLocalDone, setLocalFailed);
 }
 
@@ -45,7 +45,7 @@ function setLocalFailed(reason) {
 function lasticecandidate() {
   console.log('lasticecandidate');
   textelement = document.getElementById('textoffer');
-  offer = peerConnection.localDescription;
+  offer = localConnection.localDescription;
   textelement.value = JSON.stringify(offer);
   document.getElementById('buttonoffersent').disabled = false;
 }
@@ -64,7 +64,7 @@ function clickanswerpasted() {
   textelement = document.getElementById('textanswer');
   textelement.readOnly = true;
   answer = JSON.parse(textelement.value);
-  setRemotePromise = peerConnection.setRemoteDescription(answer);
+  setRemotePromise = localConnection.setRemoteDescription(answer);
   setRemotePromise.then(setRemoteDone, setRemoteFailed);
 }
 
