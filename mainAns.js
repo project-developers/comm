@@ -39,7 +39,7 @@ abortButton.addEventListener('click', () => {
     fileReader.abort();
   }
 });
-/*
+
 async function handleFileInputChange() {
   const file = files;
   if (!file) {
@@ -87,7 +87,7 @@ async function createConnection() {
   } catch (e) {
     console.log('Failed to create session description: ', e);
   }
-
+*/
   fileInput.disabled = true;
 }
 /*
@@ -149,7 +149,7 @@ function closeDataChannels() {
   abortButton.disabled = true;
   sendFileButton.disabled = false;
 }
-/*
+
 async function gotLocalDescription(desc) {
   await localConnection.setLocalDescription(desc);
   console.log(`Offer from localConnection\n ${desc.sdp}`);
@@ -161,7 +161,7 @@ async function gotLocalDescription(desc) {
     console.log('Failed to create session description: ', e);
   }
 }
-*/
+
 async function gotRemoteDescription(desc) {
   await peerConnection.setLocalDescription(desc);
   console.log(`Answer from peerConnection\n ${desc.sdp}`);
@@ -170,7 +170,8 @@ async function gotRemoteDescription(desc) {
 
 function dataChannelCallback(event) {
   console.log('Receive Channel Callback');
-  dataChannel = `${event.dataChannel}`;
+  dataChannel = event.channel;
+  //dataChannel = `${event.dataChannel}`;
   dataChannel.binaryType = 'arraybuffer';
   //dataChannel.binaryType = `${event.dataChannel.binaryType}`;
   dataChannel.onmessage = onReceiveMessageCallback;
