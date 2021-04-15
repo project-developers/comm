@@ -114,7 +114,7 @@ function sendData() {
   fileReader.addEventListener('error', error => console.error('Error reading file:', error));
   fileReader.addEventListener('abort', event => console.log('File reading aborted:', event));
   fileReader.addEventListener('load', e => {
-    console.log('FileRead.onload ', e);
+    //console.log('FileRead.onload ', e);
     dataChannel.send(e.target.result);
     offset += e.target.result.byteLength;
     sendProgress.value = offset;
@@ -123,7 +123,7 @@ function sendData() {
     }
   });
   const readSlice = o => {
-    console.log('readSlice ', o);
+    //console.log('readSlice ', o);
     const slice = file.slice(offset, o + chunkSize);
     fileReader.readAsArrayBuffer(slice);
   };
