@@ -90,7 +90,7 @@ async function createConnection() {
 */
   fileInput.disabled = true;
 }
-
+/*
 function sendData() {
   const file = fileInput.files[0];
   console.log(`File is ${[file.name, file.size, file.type, file.lastModified].join(' ')}`);
@@ -127,7 +127,7 @@ function sendData() {
   };
   readSlice(0);
 }
-
+*/
 function closeDataChannels() {
   console.log('Closing data channels');
   //sendChannel.close();
@@ -188,6 +188,7 @@ function dataChannelCallback(event) {
 
 var fileDetails;
 var info;
+var file;
 
 function onReceiveMessageCallback(event) {
   fileDetails = `${dataChannel.label}`
@@ -201,7 +202,7 @@ function onReceiveMessageCallback(event) {
 
   // we are assuming that our signaling protocol told
   // about the expected file size (and name, hash, etc).
-  const file = info;
+  file = info;
   if (receivedSize === file.size) {
     const received = new Blob(receiveBuffer);
     receiveBuffer = [];
