@@ -203,6 +203,9 @@ function onReceiveMessageCallback(event) {
   var info = {name: parts[0], size: Number(parts[1]), type: parts[2], lastModified: Number(parts[3])};
   */
   
+  
+  console.log(`${sendChannel.label}`);
+  
   console.log(`Received Message ${event.data.byteLength}`);
   receiveBuffer.push(event.data);
   receivedSize += event.data.byteLength;
