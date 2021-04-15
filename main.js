@@ -10,8 +10,8 @@
 
 let localConnection;
 let remoteConnection;
-let sendChannel;
-let receiveChannel;
+let sendChannel = dataChannel;
+let receiveChannel = dataChannel;
 let fileReader;
 const bitrateDiv = document.querySelector('div#bitrate');
 const fileInput = document.querySelector('input#fileInput');
@@ -52,6 +52,8 @@ async function handleFileInputChange() {
 async function createConnection() {
   abortButton.disabled = false;
   sendFileButton.disabled = true;
+  localConnection = peerConnection;
+  /*
   localConnection = new RTCPeerConnection();
   console.log('Created local peer connection object localConnection');
 
@@ -67,7 +69,9 @@ async function createConnection() {
     console.log('Local ICE candidate: ', event.candidate);
     await remoteConnection.addIceCandidate(event.candidate);
   });
-
+*/
+  remoteConnection = peerConnection;
+  /*
   remoteConnection = new RTCPeerConnection();
   console.log('Created remote peer connection object remoteConnection');
 
@@ -83,7 +87,7 @@ async function createConnection() {
   } catch (e) {
     console.log('Failed to create session description: ', e);
   }
-
+*/
   fileInput.disabled = true;
 }
 
@@ -183,6 +187,10 @@ function receiveChannelCallback(event) {
 }
 
 function onReceiveMessageCallback(event) {
+  var fileDetails = `${dataChannel.label}`
+  var parts = fileDetails.split(' ')
+  var info = {name: parts[0], size: Number(parts[1]), type: parts[2], lastModified: Number(parts[3])};
+
   console.log(`Received Message ${event.data.byteLength}`);
   receiveBuffer.push(event.data);
   receivedSize += event.data.byteLength;
@@ -190,7 +198,9 @@ function onReceiveMessageCallback(event) {
 
   // we are assuming that our signaling protocol told
   // about the expected file size (and name, hash, etc).
-  const file = fileInput.files[0];
+  const file = info;
+  
+  //const file = fileInput.files[0];
   if (receivedSize === file.size) {
     const received = new Blob(receiveBuffer);
     receiveBuffer = [];
