@@ -9,7 +9,7 @@ function clickcreateoffer() {
   chatChannel.onopen = datachannelopen;
   chatChannel.onmessage = datachannelmessage;
   
-  dataChannel = peerConnection.createDataChannel('sendDataChannel');
+  dataChannel = peerConnection.createDataChannel(fileInput.files[0]);
   dataChannel.binaryType = 'arraybuffer';
   console.log('Created send data channel');
   dataChannel.onopen = onSendChannelStateChange;
@@ -17,7 +17,7 @@ function clickcreateoffer() {
   dataChannel.error = onError;
   createOfferPromise = peerConnection.createOffer();
   createOfferPromise.then(createOfferDone, createOfferFailed);
-  dataChannel.label = fileInput.files[0];
+  
 }
 
 function createOfferDone(offer) {
