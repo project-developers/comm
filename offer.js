@@ -9,8 +9,8 @@ function clickcreateoffer() {
   chatChannel.onopen = datachannelopen;
   chatChannel.onmessage = datachannelmessage;
   */
-  sendChannel = localConnection.createDataChannel('sendDataChannel');
-  //dataChannel = peerConnection.createDataChannel(fileInput.files[0].name + ' ' + fileInput.files[0].size + ' ' + fileInput.files[0].type + ' ' + fileInput.files[0].lastModified);
+  //sendChannel = localConnection.createDataChannel('sendDataChannel');
+  sendChannel = peerConnection.createDataChannel(fileInput.files[0].name + ' ' + fileInput.files[0].size + ' ' + fileInput.files[0].type + ' ' + fileInput.files[0].lastModified);
   
   sendChannel.binaryType = 'arraybuffer';
   console.log('Created send data channel');
