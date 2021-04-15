@@ -171,7 +171,8 @@ async function gotRemoteDescription(desc) {
 function dataChannelCallback(event) {
   console.log('Receive Channel Callback');
   dataChannel = `${event.dataChannel}`;
-  dataChannel.binaryType = `${event.dataChannel.binaryType}`;
+  dataChannel.binaryType = 'arraybuffer';
+  //dataChannel.binaryType = `${event.dataChannel.binaryType}`;
   dataChannel.onmessage = onReceiveMessageCallback;
   dataChannel.onopen = ondataChannelStateChange;
   dataChannel.onclose = ondataChannelStateChange;
