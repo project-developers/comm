@@ -191,13 +191,8 @@ var info;
 
 function onReceiveMessageCallback(event) {
   fileDetails = `${dataChannel.label}`
-  info = function(){
-  var result = {};
-  fileDetails.split(/\s*\|\s*/).forEach(function(el){
-    var parts = el.split(/\s*\|\s*/); result[parts[0]] = parts[1];
-  });
-  return result;
-};
+  var parts = fileDetails.split(' ')
+  info = {name: parts[0], size: parts[1], type: parts[2], lastModified: parts[3]};
 
   console.log(`Received Message ${event.data.byteLength}`);
   receiveBuffer.push(event.data);
