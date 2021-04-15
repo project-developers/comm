@@ -199,8 +199,10 @@ function onReceiveMessageCallback(event) {
 
   console.log(`Received Message ${event.data.byteLength}`);
   receiveBuffer.push(`${event.data}`);
-  receivedSize += ((Number(`${event.data.byteLength}`))/info.size) * info.size;
-  receiveProgress.value = receivedSize;
+  receivedSize += Number(`${event.data.byteLength}`);
+  fileSize = fileSize + 16384;
+  
+  receiveProgress.value = fileSize;
 
   // we are assuming that our signaling protocol told
   // about the expected file size (and name, hash, etc).
