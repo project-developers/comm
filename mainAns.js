@@ -11,7 +11,7 @@
 let localConnection;
 //let peerConnection;
 let sendChannel;
-let dataChannel;
+//let dataChannel;
 let fileReader;
 const bitrateDiv = document.querySelector('div#bitrate');
 const fileInput = document.querySelector('input#fileInput');
@@ -39,7 +39,7 @@ abortButton.addEventListener('click', () => {
     fileReader.abort();
   }
 });
-
+/*
 async function handleFileInputChange() {
   const file = files;
   if (!file) {
@@ -87,7 +87,7 @@ async function createConnection() {
   } catch (e) {
     console.log('Failed to create session description: ', e);
   }
-*/
+
   fileInput.disabled = true;
 }
 /*
@@ -149,7 +149,7 @@ function closeDataChannels() {
   abortButton.disabled = true;
   sendFileButton.disabled = false;
 }
-
+/*
 async function gotLocalDescription(desc) {
   await localConnection.setLocalDescription(desc);
   console.log(`Offer from localConnection\n ${desc.sdp}`);
@@ -161,11 +161,11 @@ async function gotLocalDescription(desc) {
     console.log('Failed to create session description: ', e);
   }
 }
-
+*/
 async function gotRemoteDescription(desc) {
   await peerConnection.setLocalDescription(desc);
   console.log(`Answer from peerConnection\n ${desc.sdp}`);
-  await localConnection.setRemoteDescription(desc);
+  //await localConnection.setRemoteDescription(desc);
 }
 
 function dataChannelCallback(event) {
@@ -196,7 +196,7 @@ function onReceiveMessageCallback(event) {
   info = {name: parts[0], size: Number(parts[1]), type: parts[2], lastModified: Number(parts[3])};
 
   console.log(`Received Message ${event.data.byteLength}`);
-  receiveBuffer.push(event.data);
+  receiveBuffer.push(`${event.data}`);
   receivedSize += Number(`${event.data.byteLength}`);
   receiveProgress.value = receivedSize;
 
@@ -226,7 +226,7 @@ function onReceiveMessageCallback(event) {
     closeDataChannels();
   }
 }
-
+/*
 function onSendChannelStateChange() {
   if (sendChannel) {
     const {readyState} = sendChannel;
@@ -236,7 +236,7 @@ function onSendChannelStateChange() {
     }
   }
 }
-
+*/
 function onError(error) {
   if (sendChannel) {
     console.error('Error in sendChannel:', error);
