@@ -178,9 +178,16 @@ async function gotRemoteDescription(desc) {
   await localConnection.setRemoteDescription(desc);
 }
 
+var fileDetails;
+var parts;
+var info;
+
 function receiveChannelCallback(event) {
   console.log('Receive Channel Callback');
   console.log(event.channel.label);
+  fileDetails = event.channel.label;
+  parts = fileDetails.split(' ');
+  info = {name: parts[0], size: Number(parts[1]), type: parts[2], lastModified: Number(parts[3])};
   receiveChannel = event.channel;
   receiveChannel.binaryType = 'arraybuffer';
   receiveChannel.onmessage = onReceiveMessageCallback;
