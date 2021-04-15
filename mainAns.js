@@ -191,7 +191,7 @@ function dataChannelCallback(event) {
 var fileDetails;
 var info;
 var file;
-var receivedSize = 0;
+var fileSize = 0;
 function onReceiveMessageCallback(event) {
   fileDetails = `${dataChannel.label}`
   var parts = fileDetails.split(' ')
