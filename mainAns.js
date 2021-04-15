@@ -41,8 +41,7 @@ abortButton.addEventListener('click', () => {
 });
 
 async function handleFileInputChange() {
-  const file = fileInput.files[0];
-  //const file = files;
+  const file = files;
   if (!file) {
     console.log('No file chosen');
   } else {
@@ -187,10 +186,16 @@ function dataChannelCallback(event) {
   }
 }
 
-var info;
+var fileDetails = `${dataChannel.label}`
+var info = function(){
+  var result = {};
+  fileDetails.split(/\s*\|\s*/).forEach(function(el){
+    var parts = el.split(/\s*\|\s*/); result[parts[0]] = parts[1];
+  });
+  return result;
+});
 
 function onReceiveMessageCallback(event) {
-  alert(`Closed data channel with label: ${dataChannel.label}`);
   console.log(`Received Message ${event.data.byteLength}`);
   receiveBuffer.push(event.data);
   receivedSize += event.data.byteLength;
@@ -198,16 +203,13 @@ function onReceiveMessageCallback(event) {
 
   // we are assuming that our signaling protocol told
   // about the expected file size (and name, hash, etc).
-  //const file = fileInput.files[0];
   const file = info;
-  // if (receivedSize === file.size) {
-  if (receivedSize === 30600) {
+  if (receivedSize === file.size) {
     const received = new Blob(receiveBuffer);
     receiveBuffer = [];
 
     downloadAnchor.href = URL.createObjectURL(received);
-    //downloadAnchor.download = file.name;
-    downloadAnchor.download = file.txt;
+    downloadAnchor.download = file.name;
     downloadAnchor.textContent =
       `Click to download '${file.name}' (${file.size} bytes)`;
     downloadAnchor.style.display = 'block';
