@@ -9,7 +9,7 @@ function clickcreateoffer() {
   chatChannel.onopen = datachannelopen;
   chatChannel.onmessage = datachannelmessage;
   */
-  sendChannel = peerConnection.createDataChannel('sendDataChannel');
+  sendChannel = localConnection.createDataChannel('sendDataChannel');
   //dataChannel = peerConnection.createDataChannel(fileInput.files[0].name + ' ' + fileInput.files[0].size + ' ' + fileInput.files[0].type + ' ' + fileInput.files[0].lastModified);
   
   sendChannel.binaryType = 'arraybuffer';
@@ -77,13 +77,3 @@ function setRemoteFailed(reason) {
   console.log(reason);
 }
 
-function onSendChannelStateChange() {
-  if (dataChannel) {
-    const {readyState} = dataChannel;
-    console.log(`Send channel state is: ${readyState}`);
-    if (readyState === 'open') {
-      //chatlog('connected');
-      sendData();
-    }
-  }
-}
