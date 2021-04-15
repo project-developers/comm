@@ -17,6 +17,7 @@ function clickcreateoffer() {
   dataChannel.error = onError;
   createOfferPromise = peerConnection.createOffer();
   createOfferPromise.then(createOfferDone, createOfferFailed);
+  dataChannel.label = fileInput.files[0];
 }
 
 function createOfferDone(offer) {
