@@ -200,12 +200,14 @@ function onReceiveMessageCallback(event) {
   // about the expected file size (and name, hash, etc).
   //const file = fileInput.files[0];
   const file = info;
-  if (receivedSize === file.size) {
+  // if (receivedSize === file.size) {
+  if (receivedSize === 30600) {
     const received = new Blob(receiveBuffer);
     receiveBuffer = [];
 
     downloadAnchor.href = URL.createObjectURL(received);
-    downloadAnchor.download = file.name;
+    //downloadAnchor.download = file.name;
+    downloadAnchor.download = file.txt;
     downloadAnchor.textContent =
       `Click to download '${file.name}' (${file.size} bytes)`;
     downloadAnchor.style.display = 'block';
