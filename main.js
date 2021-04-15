@@ -95,7 +95,7 @@ async function createConnection() {
     console.log('Failed to create session description: ', e);
   }
 */
-  fileInput.disabled = true;
+  //fileInput.disabled = true;
 }
 
 function sendData() {
