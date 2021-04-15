@@ -191,7 +191,7 @@ function dataChannelCallback(event) {
 var fileDetails;
 var info;
 var file;
-var fileSize = 0;
+
 function onReceiveMessageCallback(event) {
   fileDetails = `${dataChannel.label}`
   var parts = fileDetails.split(' ')
@@ -200,9 +200,7 @@ function onReceiveMessageCallback(event) {
   console.log(`Received Message ${event.data.byteLength}`);
   receiveBuffer.push(`${event.data}`);
   receivedSize += Number(`${event.data.byteLength}`);
-  fileSize = fileSize + 16384;
-  
-  receiveProgress.value = fileSize;
+  receiveProgress.value = receivedSize;
 
   // we are assuming that our signaling protocol told
   // about the expected file size (and name, hash, etc).
