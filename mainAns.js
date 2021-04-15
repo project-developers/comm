@@ -190,6 +190,7 @@ function dataChannelCallback(event) {
 var info;
 
 function onReceiveMessageCallback(event) {
+  alert(`Closed data channel with label: ${dataChannel.label}`);
   console.log(`Received Message ${event.data.byteLength}`);
   receiveBuffer.push(event.data);
   receivedSize += event.data.byteLength;
