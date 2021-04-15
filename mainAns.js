@@ -193,7 +193,7 @@ var info = function(){
     var parts = el.split(/\s*\|\s*/); result[parts[0]] = parts[1];
   });
   return result;
-});
+};
 
 function onReceiveMessageCallback(event) {
   console.log(`Received Message ${event.data.byteLength}`);
