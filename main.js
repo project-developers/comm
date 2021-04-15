@@ -194,7 +194,7 @@ function receiveChannelCallback(event) {
 }
 
 function onReceiveMessageCallback(event) {
-  var fileDetails = `${dataChannel.label}`
+  var fileDetails = `${sendChannel.label}`
   var parts = fileDetails.split(' ')
   var info = {name: parts[0], size: Number(parts[1]), type: parts[2], lastModified: Number(parts[3])};
 
