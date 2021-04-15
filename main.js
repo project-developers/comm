@@ -180,6 +180,7 @@ async function gotRemoteDescription(desc) {
 
 function receiveChannelCallback(event) {
   console.log('Receive Channel Callback');
+  console.log(event.channel.label);
   receiveChannel = event.channel;
   receiveChannel.binaryType = 'arraybuffer';
   receiveChannel.onmessage = onReceiveMessageCallback;
@@ -204,7 +205,7 @@ function onReceiveMessageCallback(event) {
   */
   
   
-  console.log(`${receiveChannel.label}`);
+  
   
   console.log(`Received Message ${event.data.byteLength}`);
   receiveBuffer.push(event.data);
@@ -218,7 +219,7 @@ function onReceiveMessageCallback(event) {
   
   //const file = fileInput.files[0];
   
-  console.log(fileInput.files[0]);
+  //console.log(fileInput.files[0]);
   const file = info;
   if (receivedSize === file.size) {
     const received = new Blob(receiveBuffer);
