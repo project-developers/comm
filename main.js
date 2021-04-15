@@ -52,8 +52,11 @@ async function handleFileInputChange() {
 async function createConnection() {
   abortButton.disabled = false;
   sendFileButton.disabled = true;
-  localConnection = peerConnection;
-  sendChannel = dataChannel;
+  
+  clickcreateoffer();
+  
+  //localConnection = peerConnection;
+  //sendChannel = dataChannel;
 
   /*
   localConnection = new RTCPeerConnection();
@@ -72,8 +75,9 @@ async function createConnection() {
     await remoteConnection.addIceCandidate(event.candidate);
   });
 */
-  remoteConnection = peerConnection;
-  receiveChannel = dataChannel;
+  //remoteConnection = peerConnection;
+  //receiveChannel = dataChannel;
+  
   /*
   remoteConnection = new RTCPeerConnection();
   console.log('Created remote peer connection object remoteConnection');
