@@ -204,7 +204,7 @@ function onReceiveMessageCallback(event) {
   */
   
   
-  console.log(`${sendChannel.label}`);
+  console.log(`${receiveChannel.label}`);
   
   console.log(`Received Message ${event.data.byteLength}`);
   receiveBuffer.push(event.data);
