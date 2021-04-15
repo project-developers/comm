@@ -32,7 +32,7 @@ let statsInterval = null;
 let bitrateMax = 0;
 
 sendFileButton.addEventListener('click', () => createConnection());
-fileInput.addEventListener('change', handleFileInputChange, false);
+//fileInput.addEventListener('change', handleFileInputChange, false);
 abortButton.addEventListener('click', () => {
   if (fileReader && fileReader.readyState === 1) {
     console.log('Abort read!');
