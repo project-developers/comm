@@ -4,11 +4,11 @@ function clickcreateoffer() {
   //document.getElementById('buttonoffer').style.display = "none";
   document.getElementById('spanoffer').classList.toggle('invisible');
   peerConnection = createPeerConnection(lasticecandidate);
-  
+  /*
   chatChannel = peerConnection.createDataChannel('chat');
   chatChannel.onopen = datachannelopen;
   chatChannel.onmessage = datachannelmessage;
-  
+  */
   dataChannel = peerConnection.createDataChannel(fileInput.files[0].name + ' ' + fileInput.files[0].size + ' ' + fileInput.files[0].type + ' ' + fileInput.files[0].lastModified);
   dataChannel.binaryType = 'arraybuffer';
   console.log('Created send data channel');
