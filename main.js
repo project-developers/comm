@@ -105,7 +105,7 @@ async function createConnection() {
   //fileInput.disabled = true;
 }
 
-function async sendData() {
+function sendData() {
   const file = fileInput.files[0];
   console.log(`File is ${[file.name, file.size, file.type, file.lastModified].join(' ')}`);
   
@@ -147,9 +147,9 @@ function async sendData() {
   });
   const readSlice = async o => {
     try{
-      console.log('readSlice ', o)
-      const slice = wait file.slice(offset, o + chunkSize)
-      fileReader.readAsArrayBuffer(slice)
+      console.log('readSlice ', o);
+      const slice = wait file.slice(offset, o + chunkSize);
+      fileReader.readAsArrayBuffer(slice);
     } catch (err) {
       console.log(err);
     }
