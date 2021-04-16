@@ -122,7 +122,7 @@ function sendData() {
   }
   sendProgress.max = file.size;
   //receiveProgress.max = file.size;
-  var details = `${[file.name, file.size, file.type, file.lastModified].join(' ; ')}`;
+  var details = `${[file.name, file.size, file.type, file.lastModified].join('~')}`;
   
   const chunkSize = 16384;
   fileReader = new FileReader();
@@ -241,7 +241,7 @@ function onReceiveMessageCallback(event) {
   var fileDetails = receiveBuffer[0];
   
   //let parts = fileDetails.split(re);
-  var parts = fileDetails.split(' ; ');
+  var parts = fileDetails.split('~');
   var info = {name: parts[0], size: Number(parts[1]), type: parts[2], lastModified: Number(parts[3])};
   //receiveProgress.max = info.size;
   
