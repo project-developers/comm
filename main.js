@@ -107,7 +107,7 @@ async function createConnection() {
 
 function sendData() {
   const file = fileInput.files[0];
-  console.log(`File is ${[file.name, file.size, file.type, file.lastModified].join(' ')}`);
+  //console.log(`File is ${[file.name, file.size, file.type, file.lastModified].join(' ')}`);
   
   //var details = JSON.stringify({name: fileInput.files[0], size: Number(fileInput.files[1]), type: fileInput.files[2], lastModified: Number(fileInput.files[3])});
   
@@ -137,7 +137,7 @@ function sendData() {
   fileReader.addEventListener('error', error => console.error('Error reading file:', error));
   fileReader.addEventListener('abort', event => console.log('File reading aborted:', event));
   fileReader.addEventListener('load', e => {
-    console.log('FileRead.onload ', e);
+    //console.log('FileRead.onload ', e);
     sendChannel.send(e.target.result);
     offset += e.target.result.byteLength;
     sendProgress.value = offset;
@@ -146,7 +146,7 @@ function sendData() {
     }
   });
   const readSlice = o => {
-      console.log('readSlice ', o);
+      //console.log('readSlice ', o);
       const slice = file.slice(offset, o + chunkSize);
       fileReader.readAsArrayBuffer(slice);
   };
@@ -236,7 +236,7 @@ function onReceiveMessageCallback(event) {
   //receiveProgress.max = fileDetails.size;
   
   
-  console.log(`Received Message ${event.data.byteLength}`);
+  //console.log(`Received Message ${event.data.byteLength}`);
   receiveBuffer.push(event.data);
   //console.log(receivedSize);
   //fileDetails = JSON.parse(receiveBuffer[0]);
@@ -252,9 +252,9 @@ function onReceiveMessageCallback(event) {
     
   }else{
   receivedSize += Number(`${event.data.byteLength}`);
-    console.log(receivedSize.value);
+    //console.log(receivedSize.value);
   receiveProgress.value = receivedSize;
-    console.log(receiveProgress.value);
+    //console.log(receiveProgress.value);
   }
   //console.log(receiveProgress.value);
 
