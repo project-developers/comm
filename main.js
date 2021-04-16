@@ -184,6 +184,7 @@ var info;
 
 function receiveChannelCallback(event) {
   console.log('Receive Channel Callback');
+  chatlog('Connected');
   console.log(event.channel.label);
   fileDetails = event.channel.label;
   parts = fileDetails.split(' ');
@@ -257,7 +258,7 @@ function onSendChannelStateChange() {
     const {readyState} = sendChannel;
     console.log(`Send channel state is: ${readyState}`);
     if (readyState === 'open') {
-      chatlog('opened');
+      chatlog('Connected');
       sendData();
     }
   }
