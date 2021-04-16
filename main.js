@@ -308,10 +308,12 @@ function onReceiveMessageCallback(event) {
 function onSendChannelStateChange() {
   if (sendChannel) {
     const {readyState} = sendChannel;
-    console.log(`Send channel state is: ${readyState}`);
+    //console.log(`Send channel state is: ${readyState}`);
     if (readyState === 'open') {
       chatlog('Connected');
       //sendData();
+    }else{
+    chatlog('Disconnected');
     }
   }
 }
