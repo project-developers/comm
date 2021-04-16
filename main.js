@@ -52,8 +52,8 @@ async function handleFileInputChange() {
 async function createConnection() {
   abortButton.disabled = false;
   sendFileButton.disabled = true;
-  downloadAnchor.textContent = '';
-  bitrateDiv.innerHTML = '';
+  //downloadAnchor.textContent = '';
+  //bitrateDiv.innerHTML = '';
   
   
   if (sendChannel.readyState == "open") {
@@ -157,7 +157,7 @@ function sendData() {
       fileReader.readAsArrayBuffer(slice);
   };
   readSlice(0);
-  sendChannel.close();
+  //sendChannel.close();
 }
 
 function closeDataChannels() {
