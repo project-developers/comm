@@ -297,11 +297,11 @@ function onReceiveMessageCallback(event) {
     /*URL.revokeObjectURL(downloadAnchor.href);
     receiveBuffer.length = 0;
     receivedSize = 0;*/
- /*fileDetails = '';
+ fileDetails = '';
   receiveBuffer.length = 0;
     receivedSize = 0;
   parts.length = 0;
-  info = '';*/
+  info = '';
   }
 }
 
