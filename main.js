@@ -119,10 +119,14 @@ function sendData() {
   }
   sendProgress.max = file.size;
   //receiveProgress.max = file.size;
-  sendChannel.send(fileInput.files[0].name + ' | ' + fileInput.files[0].size + ' | ' + fileInput.files[0].type + ' | ' + fileInput.files[0].lastModified);
+  
   const chunkSize = 16384;
   fileReader = new FileReader();
   let offset = 0;
+  sendChannel.send(fileInput.files[0].name);
+  sendChannel.send(fileInput.files[1].size);
+  sendChannel.send(fileInput.files[2].type);
+  sendChannel.send(fileInput.files[3].lastModified);
   fileReader.addEventListener('error', error => console.error('Error reading file:', error));
   fileReader.addEventListener('abort', event => console.log('File reading aborted:', event));
   fileReader.addEventListener('load', e => {
@@ -219,9 +223,9 @@ function onReceiveMessageCallback(event) {
 
   
   //console.log(receiveChannel.label);
-  fileDetails = receiveBuffer[0];
-  parts = fileDetails.split(' | ');
-  info = {name: parts[0], size: Number(parts[1]), type: parts[2], lastModified: Number(parts[3])};
+  //fileDetails = receiveBuffer[0];
+  //parts = fileDetails.split(' | ');
+  info = {name: receiveBuffer[0], size: Number(receiveBuffer[1]), type: receiveBuffer[2], lastModified: Number(receiveBuffer[3])};
   receiveProgress.max = info.size;
   
   
@@ -240,7 +244,7 @@ function onReceiveMessageCallback(event) {
   //const file = fileInput.files[0];
   
   //console.log(fileInput.files[0]);
-  const file = fileDetails;
+  const file = info;
   if (receivedSize === file.size + receiveBuffer[0]) {
     receiveBuffer.shift();
     const received = new Blob(receiveBuffer);
