@@ -248,7 +248,7 @@ function onReceiveMessageCallback(event) {
   if (receiveBuffer.length == 1) {
     
   }else{
-  receivedSize += `${event.data.byteLength}`;
+  receivedSize += Number(`${event.data.byteLength}`);
     console.log(receivedSize.value);
   receiveProgress.value = receivedSize;
     console.log(receiveProgress.value);
