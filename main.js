@@ -146,13 +146,9 @@ function sendData() {
     }
   });
   const readSlice = o => {
-    //try{
       console.log('readSlice ', o);
       const slice = file.slice(offset, o + chunkSize);
       fileReader.readAsArrayBuffer(slice);
-    //} catch (err) {
-      console.log(err);
-    //}
   };
   readSlice(0);
 }
