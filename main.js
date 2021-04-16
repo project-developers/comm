@@ -147,6 +147,7 @@ function sendData() {
     async function sendChunk(event) {
     //console.log('FileRead.onload ', e);
     sendChannel.send(event.target.result);
+      await sleep(1000);
     offset += event.target.result.byteLength;
     sendProgress.value = offset;
     if (offset < file.size) {
