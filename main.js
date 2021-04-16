@@ -217,8 +217,8 @@ function onReceiveMessageCallback(event) {
     bitrateDiv.innerHTML = "";
   }
   
-  console.log(event.channel.label);
-  fileDetails = event.channel.label;
+  console.log(receiveChannel.label);
+  fileDetails = receiveChannel.label;
   parts = fileDetails.split(' ');
   info = {name: parts[0], size: Number(parts[1]), type: parts[2], lastModified: Number(parts[3])};
   receiveProgress.max = info.size;
