@@ -142,15 +142,17 @@ function sendData() {
   sendChannel.send(fileInput.files[3].lastModified);*/
   fileReader.addEventListener('error', error => console.error('Error reading file:', error));
   fileReader.addEventListener('abort', event => console.log('File reading aborted:', event));
-  fileReader.addEventListener('load', e => {
+  fileReader.addEventListener('load', sendChunk);
+                              
+    function sendChunk(event) {
     //console.log('FileRead.onload ', e);
-    sendChannel.send(e.target.result);
-    offset += e.target.result.byteLength;
+    sendChannel.send(event.target.result);
+    offset += event.target.result.byteLength;
     sendProgress.value = offset;
     if (offset < file.size) {
       readSlice(offset);
     }
-  });
+  };
   const readSlice = o => {
       //console.log('readSlice ', o);
       const slice = file.slice(offset, o + chunkSize);
