@@ -150,7 +150,7 @@ function sendData() {
     sendChannel.send(event.target.result);
       if(file.size > 10000000){
        
-      await sleep(1000);
+      await sleep(50);
       
       }
       /*if(offset == pacer * chunkSize){
