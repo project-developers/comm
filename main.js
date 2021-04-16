@@ -56,11 +56,11 @@ async function createConnection() {
   
   if (sendChannel && peerConnection) {
   //sendChannel.close();
-  //sendChannel = peerConnection.createDataChannel(fileInput.files[0].name + ' | ' + fileInput.files[0].size + ' | ' + fileInput.files[0].type + ' | ' + fileInput.files[0].lastModified);
-  sendData();
+  sendChannel = peerConnection.createDataChannel(fileInput.files[0].name + ' | ' + fileInput.files[0].size + ' | ' + fileInput.files[0].type + ' | ' + fileInput.files[0].lastModified);
+  //sendData();
   }else{
   clickcreateoffer();
-  sendData();
+  //sendData();
   };
   //localConnection = peerConnection;
   //sendChannel = dataChannel;
