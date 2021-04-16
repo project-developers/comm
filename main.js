@@ -266,7 +266,7 @@ function onReceiveMessageCallback(event) {
   const file = info;
  // if (receivedSize === (file.size + receiveBuffer[0] + receiveBuffer[1] + receiveBuffer[2] + receiveBuffer[3])) {
    
-  if (receivedSize === (file.size + receiveBuffer[0])) {
+  if (receivedSize === file.size) {
     receiveBuffer.shift();
   /*  receiveBuffer.shift();
     receiveBuffer.shift();
