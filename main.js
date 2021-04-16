@@ -122,7 +122,7 @@ function sendData() {
   }
   sendProgress.max = file.size;
   //receiveProgress.max = file.size;
-  var details(`${[file.name, file.size, file.type, file.lastModified].join(' | ')}`);
+  var details = `${[file.name, file.size, file.type, file.lastModified].join(' | ')}`;
   
   const chunkSize = 16384;
   fileReader = new FileReader();
