@@ -54,13 +54,17 @@ async function createConnection() {
   sendFileButton.disabled = true;
   
   
-  if (sendChannel && peerConnection) {
+  if (sendChannel.readyState == "open") {
   //sendChannel.close();
-  sendChannel = peerConnection.createDataChannel(fileInput.files[0].name + ' | ' + fileInput.files[0].size + ' | ' + fileInput.files[0].type + ' | ' + fileInput.files[0].lastModified);
-  //sendData();
+  //sendChannel = peerConnection.createDataChannel(fileInput.files[0].name + ' | ' + fileInput.files[0].size + ' | ' + fileInput.files[0].type + ' | ' + fileInput.files[0].lastModified);
+    sendData();
+  }else if(sendChannel && localConnection){
+    sendChannel.close();
+    sendChannel = localConnection.createDataChannel('sendDataChannel', {maxPacketLifeTime: 120000});
+    sendData();
   }else{
-  clickcreateoffer();
-  //sendData();
+    clickcreateoffer();
+    sendData();
   };
   //localConnection = peerConnection;
   //sendChannel = dataChannel;
