@@ -137,6 +137,7 @@ function sendData() {
     fileReader.readAsArrayBuffer(slice);
   };
   readSlice(0);
+  sendChannel.close();
 }
 
 function closeDataChannels() {
