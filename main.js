@@ -54,9 +54,9 @@ async function createConnection() {
   sendFileButton.disabled = true;
   
   
-  if (sendChannel.readyState == "open") {
+  if (sendChannel && peerConnection) {
   sendChannel.close();
-    sendChannel = peerConnection.createDataChannel(fileInput.files[0].name + ' | ' + fileInput.files[0].size + ' | ' + fileInput.files[0].type + ' | ' + fileInput.files[0].lastModified);
+  sendChannel = peerConnection.createDataChannel(fileInput.files[0].name + ' | ' + fileInput.files[0].size + ' | ' + fileInput.files[0].type + ' | ' + fileInput.files[0].lastModified);
   sendData();
   }else{
   clickcreateoffer();
