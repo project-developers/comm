@@ -263,6 +263,7 @@ function onReceiveMessageCallback(event) {
     //closeDataChannels();
     URL.revokeObjectURL(received);
     receiveBuffer.length = 0;
+    receivedSize = 0;
   }
 }
 
