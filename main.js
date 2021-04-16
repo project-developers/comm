@@ -108,7 +108,7 @@ function sendData() {
   if (file.size === 0) {
     bitrateDiv.innerHTML = '';
     statusMessage.textContent = 'File is empty, please select a non-empty file';
-    closeDataChannels();
+    //closeDataChannels();
     return;
   }
   sendProgress.max = file.size;
@@ -248,7 +248,7 @@ function onReceiveMessageCallback(event) {
       statsInterval = null;
     }
 
-    closeDataChannels();
+    //closeDataChannels();
   }
 }
 
