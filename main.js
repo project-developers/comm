@@ -60,6 +60,7 @@ async function createConnection() {
   sendData();
   }else{
   clickcreateoffer();
+  sendData();
   };
   //localConnection = peerConnection;
   //sendChannel = dataChannel;
