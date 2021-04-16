@@ -212,6 +212,10 @@ function onReceiveMessageCallback(event) {
   var parts = fileDetails.split(' ')
   var info = {name: parts[0], size: Number(parts[1]), type: parts[2], lastModified: Number(parts[3])};
   */
+  if(receiveBuffer.length == 0){
+    downloadAnchor.textContent = "";
+    bitrateDiv.innerHTML = "";
+  }
   
   console.log(event.channel.label);
   fileDetails = event.channel.label;
@@ -257,6 +261,7 @@ function onReceiveMessageCallback(event) {
     }
 
     //closeDataChannels();
+    URL.revokeObjectURL(received);
     receiveBuffer.length = 0;
   }
 }
