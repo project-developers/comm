@@ -119,7 +119,7 @@ function sendData() {
   }
   sendProgress.max = file.size;
   //receiveProgress.max = file.size;
-  sendChannel.send(fileInput.files[0]);
+  sendChannel.send(fileInput.files[0].name + ' | ' + fileInput.files[0].size + ' | ' + fileInput.files[0].type + ' | ' + fileInput.files[0].lastModified);
   const chunkSize = 16384;
   fileReader = new FileReader();
   let offset = 0;
@@ -220,9 +220,9 @@ function onReceiveMessageCallback(event) {
   
   //console.log(receiveChannel.label);
   fileDetails = receiveBuffer[0];
-  //parts = fileDetails.split(' | ');
-  //info = {name: parts[0], size: Number(parts[1]), type: parts[2], lastModified: Number(parts[3])};
-  receiveProgress.max = receiveBuffer[0].size;
+  parts = fileDetails.split(' | ');
+  info = {name: parts[0], size: Number(parts[1]), type: parts[2], lastModified: Number(parts[3])};
+  receiveProgress.max = info.size;
   
   
   //console.log(`Received Message ${event.data.byteLength}`);
