@@ -234,7 +234,7 @@ function onReceiveMessageCallback(event) {
   //receiveProgress.max = fileDetails.size;
   
   
-  //console.log(`Received Message ${event.data.byteLength}`);
+  console.log(`Received Message ${event.data.byteLength}`);
   receiveBuffer.push(event.data);
   //console.log(receivedSize);
   //fileDetails = JSON.parse(receiveBuffer[0]);
