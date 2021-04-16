@@ -189,11 +189,7 @@ var info;
 function receiveChannelCallback(event) {
   console.log('Receive Channel Callback');
   chatlog('Connected');
-  console.log(event.channel.label);
-  fileDetails = event.channel.label;
-  parts = fileDetails.split(' ');
-  info = {name: parts[0], size: Number(parts[1]), type: parts[2], lastModified: Number(parts[3])};
-  receiveProgress.max = info.size;
+  
   receiveChannel = event.channel;
   receiveChannel.binaryType = 'arraybuffer';
   receiveChannel.onmessage = onReceiveMessageCallback;
@@ -217,7 +213,11 @@ function onReceiveMessageCallback(event) {
   var info = {name: parts[0], size: Number(parts[1]), type: parts[2], lastModified: Number(parts[3])};
   */
   
-  
+  console.log(event.channel.label);
+  fileDetails = event.channel.label;
+  parts = fileDetails.split(' ');
+  info = {name: parts[0], size: Number(parts[1]), type: parts[2], lastModified: Number(parts[3])};
+  receiveProgress.max = info.size;
   
   
   console.log(`Received Message ${event.data.byteLength}`);
@@ -257,6 +257,7 @@ function onReceiveMessageCallback(event) {
     }
 
     //closeDataChannels();
+    receiveBuffer.length = 0;
   }
 }
 
