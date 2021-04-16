@@ -245,8 +245,12 @@ function onReceiveMessageCallback(event) {
   //receiveProgress.max = info.size;
   
   receiveProgress.max = info.size;
-  receivedSize += event.data.byteLength;
+  if (receiveBuffer.length == 1) {
+    
+  }else{
+  receivedSize += `${event.data.byteLength}`;
   receiveProgress.value = receivedSize;
+  }
   //console.log(receiveProgress.value);
 
   // we are assuming that our signaling protocol told
