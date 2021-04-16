@@ -245,7 +245,10 @@ function onReceiveMessageCallback(event) {
   
   //console.log(fileInput.files[0]);
   const file = info;
-  if (receivedSize === file.size + receiveBuffer[0]) {
+  if (receivedSize === (file.size + receiveBuffer[0] + receiveBuffer[1] + receiveBuffer[2] + receiveBuffer[3])) {
+    receiveBuffer.shift();
+    receiveBuffer.shift();
+    receiveBuffer.shift();
     receiveBuffer.shift();
     const received = new Blob(receiveBuffer);
     receiveBuffer = [];
