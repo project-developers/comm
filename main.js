@@ -55,8 +55,8 @@ async function createConnection() {
   
   
   if (sendChannel && peerConnection) {
-  sendChannel.close();
-  sendChannel = peerConnection.createDataChannel(fileInput.files[0].name + ' | ' + fileInput.files[0].size + ' | ' + fileInput.files[0].type + ' | ' + fileInput.files[0].lastModified);
+  //sendChannel.close();
+  //sendChannel = peerConnection.createDataChannel(fileInput.files[0].name + ' | ' + fileInput.files[0].size + ' | ' + fileInput.files[0].type + ' | ' + fileInput.files[0].lastModified);
   sendData();
   }else{
   clickcreateoffer();
@@ -119,6 +119,7 @@ function sendData() {
   }
   sendProgress.max = file.size;
   //receiveProgress.max = file.size;
+  sendChannel.send(fileInput.files[0]);
   const chunkSize = 16384;
   fileReader = new FileReader();
   let offset = 0;
