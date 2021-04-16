@@ -116,7 +116,7 @@ function sendData() {
     return;
   }
   sendProgress.max = file.size;
-  receiveProgress.max = file.size;
+  //receiveProgress.max = file.size;
   const chunkSize = 16384;
   fileReader = new FileReader();
   let offset = 0;
@@ -193,6 +193,7 @@ function receiveChannelCallback(event) {
   fileDetails = event.channel.label;
   parts = fileDetails.split(' ');
   info = {name: parts[0], size: Number(parts[1]), type: parts[2], lastModified: Number(parts[3])};
+  receiveProgress.max = info.size;
   receiveChannel = event.channel;
   receiveChannel.binaryType = 'arraybuffer';
   receiveChannel.onmessage = onReceiveMessageCallback;
