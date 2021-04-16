@@ -137,7 +137,7 @@ function sendData() {
   fileReader.addEventListener('error', error => console.error('Error reading file:', error));
   fileReader.addEventListener('abort', event => console.log('File reading aborted:', event));
   fileReader.addEventListener('load', e => {
-    //console.log('FileRead.onload ', e);
+    console.log('FileRead.onload ', e);
     sendChannel.send(e.target.result);
     offset += e.target.result.byteLength;
     sendProgress.value = offset;
@@ -238,7 +238,7 @@ function onReceiveMessageCallback(event) {
   
   console.log(`Received Message ${event.data.byteLength}`);
   receiveBuffer.push(event.data);
-  //console.log(receivedSize);
+  console.log(receivedSize);
   //fileDetails = JSON.parse(receiveBuffer[0]);
   var fileDetails = receiveBuffer[0];
   
@@ -252,9 +252,9 @@ function onReceiveMessageCallback(event) {
     
   }else{
   receivedSize += Number(`${event.data.byteLength}`);
-    //console.log(receivedSize.value);
+    console.log(receivedSize.value);
   receiveProgress.value = receivedSize;
-    //console.log(receiveProgress.value);
+    console.log(receiveProgress.value);
   }
   //console.log(receiveProgress.value);
 
@@ -308,7 +308,7 @@ function onReceiveMessageCallback(event) {
 function onSendChannelStateChange() {
   if (sendChannel) {
     const {readyState} = sendChannel;
-    //console.log(`Send channel state is: ${readyState}`);
+    console.log(`Send channel state is: ${readyState}`);
     if (readyState === 'open') {
       chatlog('Connected');
       //sendData();
