@@ -224,15 +224,17 @@ function onReceiveMessageCallback(event) {
 
   
   //console.log(receiveChannel.label);
-  fileDetails = JSON.parse(receiveBuffer[0]);
+  //fileDetails = JSON.parse(receiveBuffer[0]);
   //parts = fileDetails.split(' | ');
   //info = {name: receiveBuffer[0], size: Number(receiveBuffer[1]), type: receiveBuffer[2], lastModified: Number(receiveBuffer[3])};
-  receiveProgress.max = fileDetails.size;
+  //receiveProgress.max = fileDetails.size;
   
   
   //console.log(`Received Message ${event.data.byteLength}`);
   receiveBuffer.push(event.data);
   //console.log(receivedSize);
+  fileDetails = JSON.parse(receiveBuffer[0]);
+  receiveProgress.max = fileDetails.size;
   receivedSize += event.data.byteLength;
   receiveProgress.value = receivedSize;
   //console.log(receiveProgress.value);
