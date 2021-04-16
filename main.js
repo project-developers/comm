@@ -53,8 +53,12 @@ async function createConnection() {
   abortButton.disabled = false;
   sendFileButton.disabled = true;
   
-  clickcreateoffer();
   
+  if (sendChannel) {
+  sendData();
+  }else{
+  clickcreateoffer();
+  };
   //localConnection = peerConnection;
   //sendChannel = dataChannel;
 
