@@ -296,7 +296,8 @@ function onReceiveMessageCallback(event) {
     receiveBuffer.length = 0;
     receivedSize = 0;*/
  fileDetails = '';
-  
+  receiveBuffer.length = 0;
+    receivedSize = 0;
   parts = '';
   info = '';
   }
