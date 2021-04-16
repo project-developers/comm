@@ -311,7 +311,7 @@ function onSendChannelStateChange() {
     console.log(`Send channel state is: ${readyState}`);
     if (readyState === 'open') {
       chatlog('Connected');
-      sendData();
+      //sendData();
     }
   }
 }
