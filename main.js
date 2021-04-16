@@ -125,8 +125,8 @@ function sendData() {
   //receiveProgress.max = file.size;
   var details = `${[file.name, file.size, file.type, file.lastModified].join('~')}`;
   
-  //const chunkSize = 16384;
-  const chunkSize = 65535;
+  const chunkSize = 16384;
+  //const chunkSize = 65535;
   fileReader = new FileReader();
   let offset = 0;
   //var details = JSON.stringify({name: fileInput.files[0], size: Number(fileInput.files[1]), type: fileInput.files[2], lastModified: Number(fileInput.files[3])});
