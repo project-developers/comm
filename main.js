@@ -133,7 +133,8 @@ function sendData() {
   //receiveProgress.max = file.size;
   var details = `${[file.name, file.size, file.type, file.lastModified].join('~')}`;
   
-  const chunkSize = 16384;
+  const chunkSize = 1024;
+  //const chunkSize = 16384;
   //const chunkSize = 65535;
   fileReader = new FileReader();
   let offset = 0;
@@ -158,13 +159,13 @@ function sendData() {
         if (pacer == 1){pacer = 10};
       await sleep(1000);
       pacer = pacer + 10;
-      }*/
+      }*//*
       if((pacer * paceSetter) == 100){
       await sleep(3000);
       pacer = 1;
       paceSetter = 1;
       }
-      pacer++;
+      pacer++;*/
     offset += event.target.result.byteLength;
     sendProgress.value = offset;
     if (offset < file.size) {
