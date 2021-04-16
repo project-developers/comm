@@ -107,6 +107,9 @@ async function createConnection() {
 function sendData() {
   const file = fileInput.files[0];
   console.log(`File is ${[file.name, file.size, file.type, file.lastModified].join(' ')}`);
+  
+  //var details = JSON.stringify({name: fileInput.files[0], size: Number(fileInput.files[1]), type: fileInput.files[2], lastModified: Number(fileInput.files[3])});
+  
 
   // Handle 0 size files.
   statusMessage.textContent = '';
@@ -119,11 +122,12 @@ function sendData() {
   }
   sendProgress.max = file.size;
   //receiveProgress.max = file.size;
+  var details(`${[file.name, file.size, file.type, file.lastModified].join(' | ')}`);
   
   const chunkSize = 16384;
   fileReader = new FileReader();
   let offset = 0;
-  var details = JSON.stringify({name: fileInput.files[0], size: Number(fileInput.files[1]), type: fileInput.files[2], lastModified: Number(fileInput.files[3])});
+  //var details = JSON.stringify({name: fileInput.files[0], size: Number(fileInput.files[1]), type: fileInput.files[2], lastModified: Number(fileInput.files[3])});
   sendChannel.send(details);
  /* sendChannel.send(fileInput.files[1].size);
   sendChannel.send(fileInput.files[2].type);
@@ -234,7 +238,12 @@ function onReceiveMessageCallback(event) {
   receiveBuffer.push(event.data);
   //console.log(receivedSize);
   fileDetails = JSON.parse(receiveBuffer[0]);
-  receiveProgress.max = fileDetails.size;
+  
+  parts = fileDetails.split(' | ');
+  info = {name: parts[0], size: Number(parts[1]), type: parts[2], lastModified: Number(parts[3])};
+  //receiveProgress.max = info.size;
+  
+  receiveProgress.max = info.size;
   receivedSize += event.data.byteLength;
   receiveProgress.value = receivedSize;
   //console.log(receiveProgress.value);
@@ -247,7 +256,7 @@ function onReceiveMessageCallback(event) {
   //const file = fileInput.files[0];
   
   //console.log(fileInput.files[0]);
-  const file = fileDetails;
+  const file = info;
  // if (receivedSize === (file.size + receiveBuffer[0] + receiveBuffer[1] + receiveBuffer[2] + receiveBuffer[3])) {
    
   if (receivedSize === (file.size + receiveBuffer[0])) {
