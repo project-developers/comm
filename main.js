@@ -199,7 +199,7 @@ function receiveChannelCallback(event) {
   receivedSize = 0;
   bitrateMax = 0;
   downloadAnchor.textContent = '';
-  bitrateDiv.innerHTML = "";
+  bitrateDiv.innerHTML = '';
   downloadAnchor.removeAttribute('download');
   if (downloadAnchor.href) {
     URL.revokeObjectURL(downloadAnchor.href);
