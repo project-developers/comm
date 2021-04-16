@@ -234,7 +234,7 @@ function onReceiveMessageCallback(event) {
   //receiveProgress.max = fileDetails.size;
   
   
-  console.log(`Received Message ${event.data.byteLength}`);
+  //console.log(`Received Message ${event.data.byteLength}`);
   receiveBuffer.push(event.data);
   //console.log(receivedSize);
   //fileDetails = JSON.parse(receiveBuffer[0]);
@@ -249,11 +249,11 @@ function onReceiveMessageCallback(event) {
     
   }else{
   receivedSize += Number(`${event.data.byteLength}`);
-    console.log(receivedSize.value);
+    //console.log(receivedSize.value);
   receiveProgress.value = receivedSize;
-    console.log(receiveProgress.value);
+    //console.log(receiveProgress.value);
   }
-  console.log(receiveProgress.value);
+  //console.log(receiveProgress.value);
 
   // we are assuming that our signaling protocol told
   // about the expected file size (and name, hash, etc).
