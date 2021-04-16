@@ -218,7 +218,7 @@ function receiveChannelCallback(event) {
     downloadAnchor.removeAttribute('href');
   }
 }
-const re = /\s*(?:;|$)\s*/;
+//const re = /\s*(?:;|$)\s*/;
 function onReceiveMessageCallback(event) {
   /*
   var fileDetails = `${sendChannel.label}`
@@ -298,7 +298,7 @@ function onReceiveMessageCallback(event) {
  fileDetails = '';
   receiveBuffer.length = 0;
     receivedSize = 0;
-  parts = '';
+  parts.length = 0;
   info = '';
   }
 }
