@@ -238,7 +238,7 @@ function onReceiveMessageCallback(event) {
   
   console.log(`Received Message ${event.data.byteLength}`);
   receiveBuffer.push(event.data);
-  console.log(receivedSize);
+  //console.log(receivedSize);
   //fileDetails = JSON.parse(receiveBuffer[0]);
   var fileDetails = receiveBuffer[0];
   
