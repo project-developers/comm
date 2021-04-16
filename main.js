@@ -118,6 +118,7 @@ function sendData() {
   //var details = JSON.stringify({name: fileInput.files[0], size: Number(fileInput.files[1]), type: fileInput.files[2], lastModified: Number(fileInput.files[3])});
   
   var pacer = 1;
+  var paceSetter = 1;
 
   // Handle 0 size files.
   statusMessage.textContent = '';
@@ -148,7 +149,7 @@ function sendData() {
     async function sendChunk(event) {
     //console.log('FileRead.onload ', e);
     sendChannel.send(event.target.result);
-      if(file.size > 10000000){
+      /*if(file.size > 10000000){
        
       await sleep(50);
       
@@ -158,6 +159,12 @@ function sendData() {
       await sleep(1000);
       pacer = pacer + 10;
       }*/
+      if((pacer * paceSetter) == 100){
+      await sleep(3000);
+      pacer = 1;
+      paceSetter = 1;
+      }
+      pacer++;
     offset += event.target.result.byteLength;
     sendProgress.value = offset;
     if (offset < file.size) {
