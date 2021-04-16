@@ -240,7 +240,8 @@ function onReceiveMessageCallback(event) {
   //fileDetails = JSON.parse(receiveBuffer[0]);
   let fileDetails = receiveBuffer[0];
   
-  let parts = fileDetails.split(re);
+  //let parts = fileDetails.split(re);
+  let parts = fileDetails.split(' ; ');
   let info = {name: parts[0], size: Number(parts[1]), type: parts[2], lastModified: Number(parts[3])};
   //receiveProgress.max = info.size;
   
