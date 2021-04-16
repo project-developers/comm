@@ -218,7 +218,7 @@ function onReceiveMessageCallback(event) {
 
   
   //console.log(receiveChannel.label);
-  fileDetails = receiveChannel.label;
+  fileDetails = receiveBuffer[0];
   parts = fileDetails.split(' | ');
   info = {name: parts[0], size: Number(parts[1]), type: parts[2], lastModified: Number(parts[3])};
   receiveProgress.max = info.size;
@@ -240,7 +240,8 @@ function onReceiveMessageCallback(event) {
   
   //console.log(fileInput.files[0]);
   const file = info;
-  if (receivedSize === file.size) {
+  if (receivedSize === file.size + receiveBuffer[0]) {
+    receiveBuffer.shift();
     const received = new Blob(receiveBuffer);
     receiveBuffer = [];
 
