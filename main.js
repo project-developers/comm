@@ -105,7 +105,7 @@ async function createConnection() {
   //fileInput.disabled = true;
 }
 
-function sendData() {
+function async sendData() {
   const file = fileInput.files[0];
   console.log(`File is ${[file.name, file.size, file.type, file.lastModified].join(' ')}`);
   
