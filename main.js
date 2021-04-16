@@ -123,10 +123,11 @@ function sendData() {
   const chunkSize = 16384;
   fileReader = new FileReader();
   let offset = 0;
-  sendChannel.send(fileInput.files[0].name);
-  sendChannel.send(fileInput.files[1].size);
+  var details = JSON.stringify({name: fileInput.files[0], size: Number(fileInput.files[1]), type: fileInput.files[2], lastModified: Number(fileInput.files[3])});
+  sendChannel.send(details);
+ /* sendChannel.send(fileInput.files[1].size);
   sendChannel.send(fileInput.files[2].type);
-  sendChannel.send(fileInput.files[3].lastModified);
+  sendChannel.send(fileInput.files[3].lastModified);*/
   fileReader.addEventListener('error', error => console.error('Error reading file:', error));
   fileReader.addEventListener('abort', event => console.log('File reading aborted:', event));
   fileReader.addEventListener('load', e => {
@@ -223,10 +224,10 @@ function onReceiveMessageCallback(event) {
 
   
   //console.log(receiveChannel.label);
-  //fileDetails = receiveBuffer[0];
+  fileDetails = JSON.parse(receiveBuffer[0]);
   //parts = fileDetails.split(' | ');
-  info = {name: receiveBuffer[0], size: Number(receiveBuffer[1]), type: receiveBuffer[2], lastModified: Number(receiveBuffer[3])};
-  receiveProgress.max = info.size;
+  //info = {name: receiveBuffer[0], size: Number(receiveBuffer[1]), type: receiveBuffer[2], lastModified: Number(receiveBuffer[3])};
+  receiveProgress.max = fileDetails.size;
   
   
   //console.log(`Received Message ${event.data.byteLength}`);
@@ -244,12 +245,14 @@ function onReceiveMessageCallback(event) {
   //const file = fileInput.files[0];
   
   //console.log(fileInput.files[0]);
-  const file = info;
-  if (receivedSize === (file.size + receiveBuffer[0] + receiveBuffer[1] + receiveBuffer[2] + receiveBuffer[3])) {
+  const file = fileDetails;
+ // if (receivedSize === (file.size + receiveBuffer[0] + receiveBuffer[1] + receiveBuffer[2] + receiveBuffer[3])) {
+   
+  if (receivedSize === (file.size + receiveBuffer[0]) {
     receiveBuffer.shift();
+  /*  receiveBuffer.shift();
     receiveBuffer.shift();
-    receiveBuffer.shift();
-    receiveBuffer.shift();
+    receiveBuffer.shift();*/
     const received = new Blob(receiveBuffer);
     receiveBuffer = [];
 
