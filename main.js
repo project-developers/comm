@@ -199,6 +199,7 @@ function receiveChannelCallback(event) {
   receivedSize = 0;
   bitrateMax = 0;
   downloadAnchor.textContent = '';
+  bitrateDiv.innerHTML = "";
   downloadAnchor.removeAttribute('download');
   if (downloadAnchor.href) {
     URL.revokeObjectURL(downloadAnchor.href);
@@ -212,14 +213,11 @@ function onReceiveMessageCallback(event) {
   var parts = fileDetails.split(' ')
   var info = {name: parts[0], size: Number(parts[1]), type: parts[2], lastModified: Number(parts[3])};
   */
-  if(receiveBuffer.length == 0){
-    downloadAnchor.textContent = "";
-    bitrateDiv.innerHTML = "";
-  }
+
   
   console.log(receiveChannel.label);
   fileDetails = receiveChannel.label;
-  parts = fileDetails.split(' ');
+  parts = fileDetails.split(' | ');
   info = {name: parts[0], size: Number(parts[1]), type: parts[2], lastModified: Number(parts[3])};
   receiveProgress.max = info.size;
   
@@ -261,9 +259,9 @@ function onReceiveMessageCallback(event) {
     }
 
     //closeDataChannels();
-    URL.revokeObjectURL(received);
+    /*URL.revokeObjectURL(downloadAnchor.href);
     receiveBuffer.length = 0;
-    receivedSize = 0;
+    receivedSize = 0;*/
   }
 }
 
