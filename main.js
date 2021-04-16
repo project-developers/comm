@@ -144,7 +144,7 @@ function sendData() {
   fileReader.addEventListener('abort', event => console.log('File reading aborted:', event));
   fileReader.addEventListener('load', sendChunk);
                               
-    function sendChunk(event) {
+    async function sendChunk(event) {
     //console.log('FileRead.onload ', e);
     sendChannel.send(event.target.result);
     offset += event.target.result.byteLength;
