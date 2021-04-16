@@ -218,7 +218,7 @@ function receiveChannelCallback(event) {
     downloadAnchor.removeAttribute('href');
   }
 }
-
+const re = /\s*(?:;|$)\s*/;
 function onReceiveMessageCallback(event) {
   /*
   var fileDetails = `${sendChannel.label}`
@@ -238,10 +238,10 @@ function onReceiveMessageCallback(event) {
   receiveBuffer.push(event.data);
   //console.log(receivedSize);
   //fileDetails = JSON.parse(receiveBuffer[0]);
-  var fileDetails = receiveBuffer[0];
-  const re = /\s*(?:;|$)\s*/
-  var parts = fileDetails.split(re);
-  var info = {name: parts[0], size: Number(parts[1]), type: parts[2], lastModified: Number(parts[3])};
+  let fileDetails = receiveBuffer[0];
+  
+  let parts = fileDetails.split(re);
+  let info = {name: parts[0], size: Number(parts[1]), type: parts[2], lastModified: Number(parts[3])};
   //receiveProgress.max = info.size;
   
   receiveProgress.max = info.size;
@@ -263,7 +263,7 @@ function onReceiveMessageCallback(event) {
   //const file = fileInput.files[0];
   
   //console.log(fileInput.files[0]);
-  const file = info;
+  let file = info;
  // if (receivedSize === (file.size + receiveBuffer[0] + receiveBuffer[1] + receiveBuffer[2] + receiveBuffer[3])) {
    
   if (receivedSize === file.size) {
@@ -294,6 +294,10 @@ function onReceiveMessageCallback(event) {
     /*URL.revokeObjectURL(downloadAnchor.href);
     receiveBuffer.length = 0;
     receivedSize = 0;*/
+ fileDetails = '';
+  
+  parts = '';
+  info = '';
   }
 }
 
