@@ -144,7 +144,7 @@ function sendData() {
   //receiveProgress.max = file.size;
   var details = `${[file.name, file.size, file.type, file.lastModified].join('~')}`;
   
-  
+  /*
   let chunkSize;
   
   if(file.size <= 16777216){
@@ -152,9 +152,9 @@ function sendData() {
   }else{
     chunkSize = 1024;
   }
-     
+     */
   //const chunkSize = 1024;
-  //const chunkSize = 16384;
+  const chunkSize = 16384;
   //const chunkSize = 65535;
   fileReader = new FileReader();
   let offset = 0;
@@ -172,6 +172,13 @@ function sendData() {
     async function sendChunk(event) {
     //console.log('FileRead.onload ', e);
     sendChannel.send(event.target.result);
+      
+      
+    if(file.size <= 16777216){
+    
+    }else{
+    await sleep(50);
+    }
       
     //handleChunk(`${event.target.result}`);
       /*if(file.size > 10000000){
