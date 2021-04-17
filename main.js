@@ -302,7 +302,7 @@ function receiveChannelCallback(event) {
   }
 }
 
-var bitRater = 0;
+//var bitRater = 0;
 
 function onReceiveMessageCallback(event) {
   /*
@@ -311,12 +311,16 @@ function onReceiveMessageCallback(event) {
   var info = {name: parts[0], size: Number(parts[1]), type: parts[2], lastModified: Number(parts[3])};
   */
   
-  if(downloadAnchor.textContent !== ''){downloadAnchor.textContent = ''};
+  if(downloadAnchor.textContent !== ''){
+    downloadAnchor.textContent = '';
+    bitrateDiv.innerHTML = `<strong>Current Bitrate:</strong> ${bitrate} kbits/sec`;
+  };
+  /*
   if(bitRater == 1){
-    bitrateDiv.innerHTML = '';
+    bitrateDiv.innerHTML = `<strong>Current Bitrate:</strong> ${bitrate} kbits/sec`;
     bitRater = 0;
   };
-
+*/
   
   //console.log(receiveChannel.label);
   //fileDetails = JSON.parse(receiveBuffer[0]);
@@ -376,7 +380,7 @@ function onReceiveMessageCallback(event) {
       ((new Date()).getTime() - timestampStart));
     bitrateDiv.innerHTML =
       `<strong>Average Bitrate:</strong> ${bitrate} kbits/sec (max: ${bitrateMax} kbits/sec)`;
-    bitRater = 1;
+    //bitRater = 1;
 
     if (statsInterval) {
       clearInterval(statsInterval);
