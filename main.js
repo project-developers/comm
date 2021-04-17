@@ -72,7 +72,7 @@ async function createConnection() {
     sendData();
   }else if(sendChannel && localConnection){
     sendChannel.close();
-    sendChannel = localConnection.createDataChannel('sendDataChannel', {maxPacketLifeTime: 4096}, {maxRetransmits: 16});
+    sendChannel = localConnection.createDataChannel('sendDataChannel', {maxPacketLifeTime: 65536}, {maxRetransmits: 256});
     sendData();
   }else{
     clickcreateoffer();
@@ -308,6 +308,8 @@ function onReceiveMessageCallback(event) {
   var parts = fileDetails.split(' ')
   var info = {name: parts[0], size: Number(parts[1]), type: parts[2], lastModified: Number(parts[3])};
   */
+  
+  if(downloadAnchor.textContent !== ''){downloadAnchor.textContent = ''};
 
   
   //console.log(receiveChannel.label);
@@ -378,11 +380,22 @@ function onReceiveMessageCallback(event) {
     /*URL.revokeObjectURL(downloadAnchor.href);
     receiveBuffer.length = 0;
     receivedSize = 0;*/
- fileDetails = '';
-  receiveBuffer.length = 0;
+    fileDetails = '';
+    receiveBuffer.length = 0;
     receivedSize = 0;
-  parts.length = 0;
-  info = '';
+    parts.length = 0;
+    info = '';
+    /*
+    receivedSize = 0;
+    bitrateMax = 0;
+    downloadAnchor.textContent = '';
+    bitrateDiv.innerHTML = '';
+    downloadAnchor.removeAttribute('download');
+  if (downloadAnchor.href) {
+    URL.revokeObjectURL(downloadAnchor.href);
+    downloadAnchor.removeAttribute('href');
+  }
+    */
   }
 }
 
@@ -394,8 +407,9 @@ function onSendChannelStateChange() {
       chatlog('Connected');
       //sendData();
     }else{
-    chatlog('Disconnected');
+      chatlog('Disconnected');
     }
+    
   }
 }
 
