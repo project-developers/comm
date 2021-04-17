@@ -47,7 +47,7 @@ async function handleFileInputChange() {
     console.log('No file chosen');
   } else if (file.size > 64000000) {
     sendFileButton.disabled = true;
-    errorMessage.innerHTML = '<p>Please select a file small or equal to 64MB.</p>';
+    errorMessage.innerHTML = '<p>Please select a file smaller or equal to 64MB.</p>';
     
   } else {
     errorMessage.innerHTML = '';
@@ -144,10 +144,13 @@ function sendData() {
   //receiveProgress.max = file.size;
   var details = `${[file.name, file.size, file.type, file.lastModified].join('~')}`;
   
+  
+  let chunkSize;
+  
   if(file.size <= 16777216){
-    var chunkSize = 16384;
+    chunkSize = 16384;
   }else{
-    var chunkSize = 1024;
+    chunkSize = 1024;
   }
      
   //const chunkSize = 1024;
