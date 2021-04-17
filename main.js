@@ -188,7 +188,7 @@ const sleep = (milliseconds) => {
 }
 
 const handleChunk = (chunk) => {
-  return new Promise(resolve => sendChannel.send(resolve, chunk))
+  return new Promise(resolve => `${sendChannel.send(resolve, chunk)}`)
 }
 /*
 const list = [1, 2, 3, 4]
