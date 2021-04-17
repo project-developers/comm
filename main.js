@@ -177,7 +177,7 @@ function sendData() {
     if(file.size <= 16777216){
     
     }else{/* if(file.size <= 134217728){*/
-      await sleep(5);
+      await sleep(2);
     }/*else if(file.size <= 268435456){
       await sleep(4);
     }else{
