@@ -151,7 +151,7 @@ function sendData() {
     //console.log('FileRead.onload ', e);
     //sendChannel.send(event.target.result);
       
-    handleChunk(event.target.result);
+    handleChunk(`${event.target.result}`);
       /*if(file.size > 10000000){
        
       await sleep(50);
@@ -188,7 +188,7 @@ const sleep = (milliseconds) => {
 }
 
 const handleChunk = (chunk) => {
-  return new Promise(resolve => `${sendChannel.send(resolve, chunk)}`)
+  return new Promise(resolve => sendChannel.send(resolve, chunk))
 }
 /*
 const list = [1, 2, 3, 4]
