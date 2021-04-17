@@ -174,9 +174,9 @@ function sendData() {
     sendChannel.send(event.target.result);
       
       
-    if(file.size <= 16777216){
+    if(file.size <= 20000000){
     
-    }else if(file.size <= 134217728){
+    }else if(file.size <= 180000000){
       await sleep(2);
     }else{
       await sleep(3);
