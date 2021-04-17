@@ -174,12 +174,14 @@ function sendData() {
     sendChannel.send(event.target.result);
       
       
-    if(file.size <= 24000000){
+    if(file.size <= 33554432){
     
-    }else if(file.size <= 180000000){
+    }else if(file.size <= 134217728){
       await sleep(2);
+    }else if(file.size <= 268435456){
+      await sleep(4);
     }else{
-      await sleep(3);
+      await sleep(8);
     }
       
     //handleChunk(`${event.target.result}`);
