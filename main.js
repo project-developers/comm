@@ -45,7 +45,7 @@ async function handleFileInputChange() {
   const file = fileInput.files[0];
   if (!file) {
     console.log('No file chosen');
-  } else if (file.size > 64000000) {
+  } else if (file.size > 1024000000) {
     sendFileButton.disabled = true;
     errorMessage.innerHTML = '<p>Please select a file smaller or equal to 64MB.</p>';
     
