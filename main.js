@@ -313,7 +313,7 @@ function onReceiveMessageCallback(event) {
   
   if(downloadAnchor.textContent !== ''){
     downloadAnchor.textContent = '';
-    await displayStats();
+    displayStats();
     //bitrateDiv.innerHTML = `<strong>Current Bitrate:</strong> ${bitrate} kbits/sec`;
   };
   /*
