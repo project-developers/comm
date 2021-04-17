@@ -131,7 +131,7 @@ function sendData() {
     return;
   }
   
-  if (fileInput.files[0].size > 64000000) {
+  if (file.size > 64000000) {
     sendFileButton.disabled = true;
     errorMessage.innerHTML = '<p>Please select a file small or equal to 64MB.</p>';
     return;
