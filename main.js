@@ -154,7 +154,7 @@ function sendData() {
   }
      */
   //const chunkSize = 1024;
-  const chunkSize = 16384;
+  const chunkSize = 16 * 1024;
   //const chunkSize = 65535;
   fileReader = new FileReader();
   let offset = 0;
@@ -177,7 +177,7 @@ function sendData() {
     if(file.size <= 16777216){
     
     }else{/* if(file.size <= 134217728){*/
-      await sleep(4);
+      await sleep(3);
     }/*else if(file.size <= 268435456){
       await sleep(4);
     }else{
