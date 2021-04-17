@@ -176,13 +176,13 @@ function sendData() {
       
     if(file.size <= 33554432){
     
-    }else if(file.size <= 134217728){
+    }else{/* if(file.size <= 134217728){*/
       await sleep(2);
-    }else if(file.size <= 268435456){
+    }/*else if(file.size <= 268435456){
       await sleep(4);
     }else{
       await sleep(8);
-    }
+    }*/
       
     //handleChunk(`${event.target.result}`);
       /*if(file.size > 10000000){
