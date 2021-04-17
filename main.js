@@ -45,9 +45,18 @@ async function handleFileInputChange() {
   const file = fileInput.files[0];
   if (!file) {
     console.log('No file chosen');
+  } else if (file.size > 64000000) {
+    sendFileButton.disabled = true;
+    errorMessage.innerHTML = '<p>Please select a file small or equal to 64MB.</p>';
+    return;
   } else {
+    errorMessage.innerHTML = '';
     sendFileButton.disabled = false;
-  }
+    return;
+  }/*
+  {
+    sendFileButton.disabled = false;
+  }*/
 }
 
 async function createConnection() {
@@ -128,16 +137,6 @@ function sendData() {
     bitrateDiv.innerHTML = '';
     statusMessage.textContent = 'File is empty, please select a non-empty file';
     //closeDataChannels();
-    return;
-  }
-  
-  if (file.size > 64000000) {
-    sendFileButton.disabled = true;
-    errorMessage.innerHTML = '<p>Please select a file small or equal to 64MB.</p>';
-    return;
-  } else {
-    errorMessage.innerHTML = '';
-    sendFileButton.disabled = false;
     return;
   }
   
