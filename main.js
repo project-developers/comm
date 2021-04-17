@@ -145,9 +145,9 @@ function sendData() {
   var details = `${[file.name, file.size, file.type, file.lastModified].join('~')}`;
   
   if(file.size <= 16777216){
-    const chunkSize = 16384;
+    var chunkSize = 16384;
   }else{
-    const chunkSize = 1024;
+    var chunkSize = 1024;
   }
      
   //const chunkSize = 1024;
