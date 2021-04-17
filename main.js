@@ -396,6 +396,7 @@ async function onReceiveMessageCallback(event) {
     receiveBuffer.length = 0;
     receivedSize = 0;*/
     fileDetails = '';
+    bitrateMax = 0;
     receiveBuffer.length = 0;
     receivedSize = 0;
     parts.length = 0;
