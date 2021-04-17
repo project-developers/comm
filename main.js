@@ -405,6 +405,11 @@ async function onReceiveMessageCallback(event) {
     receivedSize = 0;
     parts.length = 0;
     info = '';
+    downloadAnchor.removeAttribute('download');
+  if (downloadAnchor.href) {
+    URL.revokeObjectURL(downloadAnchor.href);
+    downloadAnchor.removeAttribute('href');
+  };
     /*
     receivedSize = 0;
     bitrateMax = 0;
