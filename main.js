@@ -139,7 +139,9 @@ function sendData() {
   fileReader = new FileReader();
   let offset = 0;
   //var details = JSON.stringify({name: fileInput.files[0], size: Number(fileInput.files[1]), type: fileInput.files[2], lastModified: Number(fileInput.files[3])});
-  sendChannel.send(details);
+  
+  handleChunk(details);
+  //sendChannel.send(details);
  /* sendChannel.send(fileInput.files[1].size);
   sendChannel.send(fileInput.files[2].type);
   sendChannel.send(fileInput.files[3].lastModified);*/
@@ -149,9 +151,9 @@ function sendData() {
                               
     async function sendChunk(event) {
     //console.log('FileRead.onload ', e);
-    //sendChannel.send(event.target.result);
+    sendChannel.send(event.target.result);
       
-    handleChunk(`${event.target.result}`);
+    //handleChunk(`${event.target.result}`);
       /*if(file.size > 10000000){
        
       await sleep(50);
@@ -174,6 +176,10 @@ function sendData() {
       readSlice(offset);
     }
   };
+  
+  const handleChunk = (chunk) => {
+    return new Promise(resolve => sendChannel.send(resolve, chunk))
+  }
   const readSlice = o => {
       //console.log('readSlice ', o);
       const slice = file.slice(offset, o + chunkSize);
@@ -187,9 +193,7 @@ const sleep = (milliseconds) => {
   return new Promise(resolve => setTimeout(resolve, milliseconds))
 }
 
-const handleChunk = (chunk) => {
-  return new Promise(resolve => sendChannel.send(resolve, chunk))
-}
+
 /*
 const list = [1, 2, 3, 4]
 const doSomething = async () => {
