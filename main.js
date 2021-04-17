@@ -48,13 +48,6 @@ async function handleFileInputChange() {
   } else {
     sendFileButton.disabled = false;
   }
-  if (fileInput.files[0].size > 64000000) {
-    sendFileButton.disabled = true;
-    errorMessage.innerHTML = '<p>Please select a file small or equal to 64MB.</p>';
-  } else {
-    errorMessage.innerHTML = '';
-    sendFileButton.disabled = false;
-  }
 }
 
 async function createConnection() {
@@ -137,6 +130,17 @@ function sendData() {
     //closeDataChannels();
     return;
   }
+  
+  if (fileInput.files[0].size > 64000000) {
+    sendFileButton.disabled = true;
+    errorMessage.innerHTML = '<p>Please select a file small or equal to 64MB.</p>';
+    return;
+  } else {
+    errorMessage.innerHTML = '';
+    sendFileButton.disabled = false;
+    return;
+  }
+  
   sendProgress.max = file.size;
   //receiveProgress.max = file.size;
   var details = `${[file.name, file.size, file.type, file.lastModified].join('~')}`;
