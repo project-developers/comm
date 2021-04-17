@@ -47,7 +47,7 @@ async function handleFileInputChange() {
     console.log('No file chosen');
   } else if (file.size > 1024000000) {
     sendFileButton.disabled = true;
-    errorMessage.innerHTML = '<p>Please select a file smaller or equal to 64MB.</p>';
+    errorMessage.innerHTML = '<p>Please select a file smaller or equal to 100MB.</p>';
     
   } else {
     errorMessage.innerHTML = '';
@@ -72,7 +72,7 @@ async function createConnection() {
     sendData();
   }else if(sendChannel && localConnection){
     sendChannel.close();
-    sendChannel = localConnection.createDataChannel('sendDataChannel', {maxPacketLifeTime: 1048576}, {maxRetransmits: 4096});
+    sendChannel = localConnection.createDataChannel('sendDataChannel', {maxPacketLifeTime: 16777216}, {maxRetransmits: 65536});
     sendData();
   }else{
     clickcreateoffer();
