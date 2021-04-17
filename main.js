@@ -184,6 +184,10 @@ function sendData() {
 const sleep = (milliseconds) => {
   return new Promise(resolve => setTimeout(resolve, milliseconds))
 }
+
+const handleChunk = (chunk) => {
+  return new Promise(resolve => sendChannel.send(resolve, chunk))
+}
 /*
 const list = [1, 2, 3, 4]
 const doSomething = async () => {
