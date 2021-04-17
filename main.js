@@ -176,8 +176,10 @@ function sendData() {
       
     if(file.size <= 16777216){
     
+    }else if(file.size <= 134217728){
+      await sleep(2);
     }else{
-    await sleep(2);
+      await sleep(3);
     }
       
     //handleChunk(`${event.target.result}`);
