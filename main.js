@@ -304,7 +304,7 @@ function receiveChannelCallback(event) {
 
 //var bitRater = 0;
 
-function onReceiveMessageCallback(event) {
+async function onReceiveMessageCallback(event) {
   /*
   var fileDetails = `${sendChannel.label}`
   var parts = fileDetails.split(' ')
@@ -316,7 +316,7 @@ function onReceiveMessageCallback(event) {
     timestampStart = (new Date()).getTime();
     timestampPrev = timestampStart;
     statsInterval = setInterval(displayStats, 500);
-    displayStats();
+    await displayStats();
     //bitrateDiv.innerHTML = `<strong>Current Bitrate:</strong> ${bitrate} kbits/sec`;
   };
   /*
