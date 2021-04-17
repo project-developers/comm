@@ -62,7 +62,7 @@ async function createConnection() {
     sendData();
   }else if(sendChannel && localConnection){
     sendChannel.close();
-    sendChannel = localConnection.createDataChannel('sendDataChannel', {ordered: false}, {maxPacketLifeTime: 10000}, {maxRetransmits: 3});
+    sendChannel = localConnection.createDataChannel('sendDataChannel', {maxPacketLifeTime: 4096}, {maxRetransmits: 16});
     sendData();
   }else{
     clickcreateoffer();
@@ -133,8 +133,14 @@ function sendData() {
   //receiveProgress.max = file.size;
   var details = `${[file.name, file.size, file.type, file.lastModified].join('~')}`;
   
+  if(file.size <= 16777216){
+    const chunkSize = 16384;
+  }else{
+    const chunkSize = 1024;
+  }
+     
   //const chunkSize = 1024;
-  const chunkSize = 16384;
+  //const chunkSize = 16384;
   //const chunkSize = 65535;
   fileReader = new FileReader();
   let offset = 0;
