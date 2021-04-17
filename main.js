@@ -72,7 +72,7 @@ async function createConnection() {
     sendData();
   }else if(sendChannel && localConnection){
     sendChannel.close();
-    sendChannel = localConnection.createDataChannel('sendDataChannel', {maxPacketLifeTime: 65536}, {maxRetransmits: 256});
+    sendChannel = localConnection.createDataChannel('sendDataChannel', {maxPacketLifeTime: 1048576}, {maxRetransmits: 4096});
     sendData();
   }else{
     clickcreateoffer();
