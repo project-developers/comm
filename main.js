@@ -48,11 +48,11 @@ async function handleFileInputChange() {
   } else if (file.size > 64000000) {
     sendFileButton.disabled = true;
     errorMessage.innerHTML = '<p>Please select a file small or equal to 64MB.</p>';
-    return;
+    
   } else {
     errorMessage.innerHTML = '';
     sendFileButton.disabled = false;
-    return;
+    
   }/*
   {
     sendFileButton.disabled = false;
