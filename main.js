@@ -21,6 +21,7 @@ const sendProgress = document.querySelector('progress#sendProgress');
 const receiveProgress = document.querySelector('progress#receiveProgress');
 const statusMessage = document.querySelector('span#status');
 const sendFileButton = document.querySelector('button#sendFile');
+const errorMessage = document.querySelector('div#errorMsg');
 
 let receiveBuffer = [];
 let receivedSize = 0;
@@ -46,6 +47,13 @@ async function handleFileInputChange() {
     console.log('No file chosen');
   } else {
     sendFileButton.disabled = false;
+  }
+  if (fileInput.files[0].size > 64000000) {
+    sendButton.disabled = true;
+    errorMessage.innerHTML = '<p>Please select a file small or equal to 64MB.</p>';
+  } else {
+    errorMessage.innerHTML = '';
+    sendButton.disabled = false;
   }
 }
 
