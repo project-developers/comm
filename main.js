@@ -177,7 +177,7 @@ function sendData() {
     if(file.size <= 16777216){
     
     }else{
-    await sleep(1);
+    await sleep(2);
     }
       
     //handleChunk(`${event.target.result}`);
@@ -313,7 +313,8 @@ function onReceiveMessageCallback(event) {
   
   if(downloadAnchor.textContent !== ''){
     downloadAnchor.textContent = '';
-    bitrateDiv.innerHTML = `<strong>Current Bitrate:</strong> ${bitrate} kbits/sec`;
+    await displayStats();
+    //bitrateDiv.innerHTML = `<strong>Current Bitrate:</strong> ${bitrate} kbits/sec`;
   };
   /*
   if(bitRater == 1){
