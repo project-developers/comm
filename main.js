@@ -133,15 +133,15 @@ function sendData() {
   //receiveProgress.max = file.size;
   var details = `${[file.name, file.size, file.type, file.lastModified].join('~')}`;
   
-  const chunkSize = 1024;
-  //const chunkSize = 16384;
+  //const chunkSize = 1024;
+  const chunkSize = 16384;
   //const chunkSize = 65535;
   fileReader = new FileReader();
   let offset = 0;
   //var details = JSON.stringify({name: fileInput.files[0], size: Number(fileInput.files[1]), type: fileInput.files[2], lastModified: Number(fileInput.files[3])});
   
-  handleChunk(details);
-  //sendChannel.send(details);
+ // handleChunk(details);
+  sendChannel.send(details);
  /* sendChannel.send(fileInput.files[1].size);
   sendChannel.send(fileInput.files[2].type);
   sendChannel.send(fileInput.files[3].lastModified);*/
@@ -177,9 +177,11 @@ function sendData() {
     }
   };
   
+  /*
   const handleChunk = (chunk) => {
     return new Promise(resolve => sendChannel.send(resolve, chunk))
   }
+  */
   const readSlice = o => {
       //console.log('readSlice ', o);
       const slice = file.slice(offset, o + chunkSize);
