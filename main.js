@@ -313,6 +313,9 @@ function onReceiveMessageCallback(event) {
   
   if(downloadAnchor.textContent !== ''){
     downloadAnchor.textContent = '';
+    timestampStart = (new Date()).getTime();
+    timestampPrev = timestampStart;
+    statsInterval = setInterval(displayStats, 500);
     displayStats();
     //bitrateDiv.innerHTML = `<strong>Current Bitrate:</strong> ${bitrate} kbits/sec`;
   };
