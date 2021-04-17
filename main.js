@@ -301,7 +301,9 @@ function receiveChannelCallback(event) {
     downloadAnchor.removeAttribute('href');
   }
 }
-//const re = /\s*(?:;|$)\s*/;
+
+var bitRater = 0;
+
 function onReceiveMessageCallback(event) {
   /*
   var fileDetails = `${sendChannel.label}`
@@ -310,6 +312,10 @@ function onReceiveMessageCallback(event) {
   */
   
   if(downloadAnchor.textContent !== ''){downloadAnchor.textContent = ''};
+  if(bitRater == 1){
+    bitrateDiv.innerHTML = '';
+    bitRater = 0;
+  };
 
   
   //console.log(receiveChannel.label);
@@ -370,6 +376,7 @@ function onReceiveMessageCallback(event) {
       ((new Date()).getTime() - timestampStart));
     bitrateDiv.innerHTML =
       `<strong>Average Bitrate:</strong> ${bitrate} kbits/sec (max: ${bitrateMax} kbits/sec)`;
+    bitRater = 1;
 
     if (statsInterval) {
       clearInterval(statsInterval);
