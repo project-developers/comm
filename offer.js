@@ -10,7 +10,7 @@ function clickcreateoffer() {
   chatChannel.onmessage = datachannelmessage;
   */
   //sendChannel = localConnection.createDataChannel('sendDataChannel');
-  sendChannel = localConnection.createDataChannel('sendDataChannel', {maxPacketLifeTime: 268435456}, {maxRetransmits: 1048576});
+  sendChannel = localConnection.createDataChannel('sendDataChannel', {maxPacketLifeTime: 32768}); //, {maxRetransmits: 1048576});
   //sendChannel = peerConnection.createDataChannel(fileInput.files[0].name + ' | ' + fileInput.files[0].size + ' | ' + fileInput.files[0].type + ' | ' + fileInput.files[0].lastModified);
   
   sendChannel.binaryType = 'arraybuffer';
