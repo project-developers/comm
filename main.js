@@ -52,7 +52,7 @@ async function handleFileInputChange() {
   } else {
     errorMessage.innerHTML = '';
     sendFileButton.disabled = false;
-    j
+  
   }/*
   {
     sendFileButton.disabled = false;
