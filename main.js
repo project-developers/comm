@@ -52,7 +52,7 @@ async function handleFileInputChange() {
   } else {
     errorMessage.innerHTML = '';
     sendFileButton.disabled = false;
-    
+    j
   }/*
   {
     sendFileButton.disabled = false;
@@ -72,7 +72,7 @@ async function createConnection() {
     sendData();
   }else if(sendChannel && localConnection){
     sendChannel.close();
-    sendChannel = localConnection.createDataChannel('sendDataChannel', {maxPacketLifeTime: 268435456}, {maxRetransmits: 1048576});
+    sendChannel = localConnection.createDataChannel('sendDataChannel', {maxPacketLifeTime: 32768}) //, {maxRetransmits: 1048576});
     sendData();
   }else{
     clickcreateoffer();
@@ -177,7 +177,7 @@ function sendData() {
     if(file.size <= 16777216){
     
     }else{/* if(file.size <= 134217728){*/
-      await sleep(3);
+      await sleep(2);
     }/*else if(file.size <= 268435456){
       await sleep(4);
     }else{
